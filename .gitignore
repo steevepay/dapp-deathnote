@@ -74,3 +74,4 @@ dist/
 yarn-error.log
 
 # End of https://www.gitignore.io/api/nuxt,vuejs,macos,soliditytruffle
+.secret
