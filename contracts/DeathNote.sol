@@ -1,7 +1,7 @@
 pragma solidity ^0.5.8;
 
-import "./ownable.sol";
-import "./safemath.sol";
+import "./Ownable.sol";
+import "./Safemath.sol";
 
 contract DeathNote is Ownable {
 
@@ -45,5 +45,4 @@ contract DeathNote is Ownable {
         address payable _owner = owner();
         _owner.transfer(address(this).balance);
     }
-    
 }
