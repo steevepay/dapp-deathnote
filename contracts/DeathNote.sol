@@ -5,7 +5,7 @@ import "./Safemath.sol";
 
 contract Deathnote is Ownable {
 
-     using SafeMath for uint256;
+    using SafeMath for uint256;
     event NewDeath(uint id, address owner, string _name, string _conditions, string _date, string _img);
 
     struct Death{
@@ -16,7 +16,7 @@ contract Deathnote is Ownable {
         string img;
     }
 
-    uint deathFee = 0.001 ether;
+    uint private deathFee = 0.001 ether;
     Death[] public deaths;
     mapping(uint => address) public deathsOwner;
     mapping(address => uint) public deathsCounterOwner;
