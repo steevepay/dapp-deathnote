@@ -24,5 +24,10 @@ contract("DeathNote", (accounts) => {
     assert.equal(true, test2);
   })
 
-  it("create a new death")
+  it("create a new death", async () => {
+    const deathnote = await Deathnote.deployed();
+    await deathnote.addDeath('John', 'heart attack', '2019/10/18', 'base64://');
+    // compare the length of dead at 1
+    // get pushed death and compage the name deasc date and image
+  });
 })
