@@ -1,9 +1,9 @@
 pragma solidity ^0.5.8;
 
-import "./Ownable.sol";
+import  "./Ownable.sol";
 import "./Safemath.sol";
 
-contract DeathNote is Ownable {
+contract Deathnote is Ownable {
 
      using SafeMath for uint256;
     event NewDeath(address owner, string _name, string _conditions, string _date, string _img);

@@ -1,5 +1,5 @@
-const DeathNote = artifacts.require("DeathNote");
+const Deathnote = artifacts.require("Deathnote");
 
 module.exports = (deployer) => {
-  deployer.deploy(DeathNote);
+  deployer.deploy(Deathnote);
 }
