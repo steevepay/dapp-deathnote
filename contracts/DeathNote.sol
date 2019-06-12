@@ -45,4 +45,8 @@ contract Deathnote is Ownable {
         address payable _owner = owner();
         _owner.transfer(address(this).balance);
     }
+
+    function getBalance() public view returns (uint256) {
+      return address(this).balance;
+    }
 }

@@ -70,13 +70,15 @@ contract("DeathNote", (accounts) => {
   });
 
   it('different death owned by different persons', async () => {
+    const deathnote2 = await Deathnote.new();
     const length = 4;
-    for (let index = 1; index < length; index++) {
-      await deathnote.addDeath('test' + index, 'test' + index, 'test' + index, 'test' + index, {
+
+    for (let index = 0; index < length; index++) {
+      await deathnote2.addDeath('test' + index, 'test' + index, 'test' + index, 'test' + index, {
         value: web3.utils.toWei('0.001', 'ether'),
         from: accounts[index]
       })
-      let address = await deathnote.deathsOwner(index - 1);
+      let address = await deathnote2.deathsOwner(index + 1);
       assert.equal(accounts[index], address);
     }
   });
@@ -102,6 +104,33 @@ contract("DeathNote", (accounts) => {
     } catch (err) {
       assert(err);
     }
+  });
+
+  it("owner can withdraw the funds", async () => {
+    const deathnote2 = await Deathnote.new();
+    const initialBalance = parseFloat(web3.utils.fromWei(await web3.eth.getBalance(accounts[0]), 'ether'));
+    for (let index = 0; index < 4; index++) {
+      await deathnote2.addDeath("test" + index, "test" + index, "test" + index, "test" + index, {
+        from: accounts[index + 1],
+        value: web3.utils.toWei("0.05", 'ether')
+      });
+    }
+    await deathnote2.withdraw();
+    const endbalance = parseFloat(web3.utils.fromWei(await web3.eth.getBalance(accounts[0]), 'ether'));
+    const balance = endbalance - initialBalance;
+    assert(balance > 0.19);
+  });
+
+  it("get balance", async () => {
+    const deathnote2 = await Deathnote.new();
+    for (let index = 0; index < 4; index++) {
+      await deathnote2.addDeath("test" + index, "test" + index, "test" + index, "test" + index, {
+        from: accounts[index + 1],
+        value: web3.utils.toWei("0.05", 'ether')
+      });
+    }
+    const contractBalance = parseFloat(web3.utils.fromWei(await deathnote2.getBalance(), "ether"));
+    assert(contractBalance == 0.2);
   });
 
 })
