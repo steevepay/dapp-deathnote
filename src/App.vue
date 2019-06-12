@@ -38,6 +38,11 @@ export default {
   async mounted() {
     // console.log(await dns.getDeathsLength());
     // console.log(await dns.getDeath(0));
+    // console.log(await dns.getDeathsOwner(3));
+    // const account = await web3.getAccount();
+    // console.log(await dns.getDeathsCounterOwner(account));
+    // console.log(await dns.getContractBalance());
+    console.log(await dns.getDeathFee());
   }
 };
 </script>

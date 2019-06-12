@@ -29,6 +29,6 @@ export const fromWei = (value, type) => {
   return web3.utils.fromWei(value, type);
 };
 
-export const getWeb3 = () => {
+export const getWeb3Instance = () => {
   return web3;
 };

@@ -20,13 +20,14 @@ dnc.events
       // console.log(event);
     }
   )
+  // eslint-disable-next-line no-unused-vars
   .on("data", event => {
-    // console.log(event); // same results as the optional callback above
+    console.log(event); // same results as the optional callback above
   })
   // eslint-disable-next-line no-unused-vars
   .on("changed", event => {
     // remove event from local database
-    console.log(event);
+    // console.log(event);
   })
   .on("error", console.error);
 

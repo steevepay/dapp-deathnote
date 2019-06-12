@@ -30,10 +30,17 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "home",
   components: {
     // HelloWorld
+  },
+  methods: {
+    ...mapActions(["fetchDeathNotes"])
+  },
+  async mounted() {
+    await this.fetchDeathNotes();
   }
 };
 </script>
