@@ -62,7 +62,7 @@
         <div class="navbar-item">
           <div class="buttons">
             <b-tooltip
-              label="Write a death"
+              label="Write a new name"
               position="is-bottom"
               animated
               v-show="walletLinked"

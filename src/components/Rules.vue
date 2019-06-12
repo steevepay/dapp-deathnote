@@ -95,7 +95,7 @@
             </li>
           </ol>
         </div>
-        <small>Kira - 6:23 PM - 28 Nov 2003</small>
+        <small>6:23 PM - 28 Nov 2003 - Kira</small>
       </div>
     </div>
   </b-modal>
