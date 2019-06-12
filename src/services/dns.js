@@ -16,7 +16,6 @@ export const getDeathsLength = async () => {
   let length;
   try {
     length = await deathnote.methods.getDeathsLength().call();
-    console.log(length);
   } catch (err) {
     console.log(err);
   }

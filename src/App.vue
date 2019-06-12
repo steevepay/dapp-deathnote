@@ -15,8 +15,9 @@ import Navbar from "@/components/Navbar.vue";
 import Rules from "@/components/Rules.vue";
 
 // eslint-disable-next-line no-unused-vars
-// import * as web3 from "@/services/web3.js";
-import { getDeathsLength, getDeath } from "@/services/dns";
+import * as web3 from "@/services/web3.js";
+// eslint-disable-next-line no-unused-vars
+import * as dns from "@/services/dns";
 
 export default {
   components: {
@@ -35,8 +36,8 @@ export default {
   },
   async created() {},
   async mounted() {
-    console.log(await getDeathsLength());
-    console.log(await getDeath(0));
+    // console.log(await dns.getDeathsLength());
+    // console.log(await dns.getDeath(0));
   }
 };
 </script>
