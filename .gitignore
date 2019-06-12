@@ -1,6 +1,24 @@
 
-# Created by https://www.gitignore.io/api/nuxt,vuejs,macos,soliditytruffle
-# Edit at https://www.gitignore.io/?templates=nuxt,vuejs,macos,soliditytruffle
+# Created by https://www.gitignore.io/api/vuejs,macos,soliditytruffle
+# Edit at https://www.gitignore.io/?templates=vuejs,macos,soliditytruffle
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 ### macOS ###
 # General
@@ -29,17 +47,6 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-
-### Nuxt ###
-# gitignore template for Nuxt.js projects
-#
-# Recommended template: Node.gitignore
-
-# Nuxt build
-.nuxt
-
- # Nuxt generate
-dist
 
 ### SolidityTruffle ###
 # depedencies
@@ -73,5 +80,4 @@ node_modules/
 dist/
 yarn-error.log
 
-# End of https://www.gitignore.io/api/nuxt,vuejs,macos,soliditytruffle
-.secret
+# End of https://www.gitignore.io/api/vuejs,macos,soliditytruffle
