@@ -61,11 +61,20 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <b-button type="is-primary">
-              <strong>The rules</strong>
-            </b-button>
+            <b-tooltip
+              label="Write a death"
+              position="is-bottom"
+              animated
+              v-show="walletLinked"
+              style="margin-right: 8px;"
+              type="is-dark"
+            >
+              <b-button type="is-success">
+                <b-icon icon="plus"></b-icon>
+              </b-button>
+            </b-tooltip>
             <b-button
-              v-show="!walletLinked"
+              v-show="walletLinked"
               class="button is-light"
               icon-left="skull"
               to="/my-notes"
@@ -73,9 +82,16 @@
             >
               My Notes
             </b-button>
+            <b-button
+              type="is-primary"
+              @click="$emit('toggle-rules-modal', true)"
+            >
+              The rules
+            </b-button>
           </div>
+          <!-- </div> -->
         </div>
-        <a class="navbar-item" v-show="walletLinked">
+        <a class="navbar-item" v-show="!walletLinked">
           <b-icon
             icon="cloud-off-outline"
             size="is-small"
@@ -91,12 +107,16 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
-    return {
-      walletLinked: true
-    };
-  }
+    return {};
+  },
+  computed: {
+    ...mapGetters(["walletLinked"])
+  },
+  created() {}
 };
 </script>
 

@@ -1,16 +1,42 @@
 <template>
   <div id="app">
-    <Navbar />
+    <Navbar @toggle-rules-modal="handleRulesModalEvents" />
     <router-view class="container" />
+    <Rules
+      :is-active="modalRulesActive"
+      @toggle-rules-modal="handleRulesModalEvents"
+    />
   </div>
 </template>
 
 <script>
+/* Components */
 import Navbar from "@/components/Navbar.vue";
+import Rules from "@/components/Rules.vue";
+
+// eslint-disable-next-line no-unused-vars
+// import * as web3 from "@/services/web3.js";
+import { getDeathsLength, getDeath } from "@/services/dns";
 
 export default {
   components: {
-    Navbar
+    Navbar,
+    Rules
+  },
+  data() {
+    return {
+      modalRulesActive: false
+    };
+  },
+  methods: {
+    handleRulesModalEvents(data) {
+      this.modalRulesActive = data;
+    }
+  },
+  async created() {},
+  async mounted() {
+    console.log(await getDeathsLength());
+    console.log(await getDeath(0));
   }
 };
 </script>

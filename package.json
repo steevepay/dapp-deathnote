@@ -15,7 +15,8 @@
     "css-loader": "^3.0.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "web3": "^1.0.0-beta.37"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
@@ -32,6 +33,7 @@
     "material-design-icons-iconfont": "^5.0.1",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "truffle-hdwallet-provider": "^1.0.7"
   }
 }
