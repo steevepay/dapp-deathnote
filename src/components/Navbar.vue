@@ -68,6 +68,8 @@
               v-show="!walletLinked"
               class="button is-light"
               icon-left="skull"
+              to="/my-notes"
+              tag="router-link"
             >
               My Notes
             </b-button>
