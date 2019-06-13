@@ -28,6 +28,11 @@ contract Deathnote is Ownable {
         deathsCounterOwner[msg.sender] = deathsCounterOwner[msg.sender].add(1);
         emit NewDeath( id, msg.sender, _name, _conditions, _date, _img);
     }
+    
+    function getDeath(uint _id) public view returns (address owner, string memory name, string memory conditions, string memory timeOfDeath, string memory img) {
+        require(_id >= 0 && _id < deaths.length);
+        return(deaths[_id].owner, deaths[_id].name, deaths[_id].conditions, deaths[_id].timeOfDeath, deaths[_id].img);
+    }
 
     function getDeathsLength() public view returns (uint) {
         return deaths.length;

@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",
-    "test:contract": "Truffle test ./tests/contracts/*"
+    "test:truffle": "Truffle test ./tests/contracts/*"
   },
   "dependencies": {
     "buefy": "^0.7.7",
