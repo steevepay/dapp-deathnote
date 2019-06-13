@@ -37,18 +37,13 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         store.dispatch("fetchNumberOfDeathNotes").then(totalOfDeath => {
           if (
-            to.params.page > Math.ceil(totalOfDeath / 12) ||
+            to.params.page >
+              Math.ceil(totalOfDeath / store.state.maxPerPages) ||
             to.params.page < 1
           ) {
             next("/error/404");
           }
         });
-        // this.()
-        // if (this.page > Math.ceil(this.numberOfDeaths / 12) || this.page < 1) {
-        //
-        // ERROR PAGE
-        // }
-        // });
         next();
       }
     }

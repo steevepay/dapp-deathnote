@@ -10,10 +10,17 @@ import { checkDeathObjectValid } from "@/store/helpers/deathhelper";
 
 export default new Vuex.Store({
   state: {
+    // Max of notes per pages.
+    maxPerPages: 16,
+    // Number of notes has been written in the contract
     numberOfDeaths: 0,
+    // Deaths fetched
     deaths: []
   },
   mutations: {
+    EMPTY_DEATHS_ARRAY(state) {
+      state.deaths = [];
+    },
     ADD_DEATH(state, death) {
       state.deaths.unshift(death);
     },
@@ -22,20 +29,40 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async fetchNumberOfDeathNotes({ commit, state }) {
+    async fetchNumberOfDeathNotes({ commit }) {
       return await dns.getDeathsLength().then(nbr => {
+        nbr = parseFloat(nbr);
         commit("SET_NUMBER_OF_DEATHS", nbr);
-        console.log(state.numberOfDeaths);
         return nbr;
       });
     },
-    async fetchDeathNotes({ commit, state, dispatch }) {
+    async fetchDeathNotes({ commit, state, dispatch }, page) {
       let death;
-      await dispatch("fetchNumberOfDeathNotes");
-      for (var id = 0; id < state.numberOfDeaths; id++) {
-        death = await dns.getDeath(id);
-        if (checkDeathObjectValid(death)) {
-          commit("ADD_DEATH", death);
+      if (state.numberOfDeaths === 0) {
+        await dispatch("fetchNumberOfDeathNotes");
+      }
+      if (
+        page < 1 ||
+        Math.ceil(state.numberOfDeaths / state.maxPerPages) < page
+      ) {
+        console.log("ERROR PAGE");
+        return;
+      }
+
+      let end;
+      let begin = (page - 1) * state.maxPerPages;
+      if (begin + state.maxPerPages > state.numberOfDeaths) {
+        end = state.numberOfDeaths;
+      } else {
+        end = begin + state.maxPerPages;
+      }
+      if (begin < end) {
+        commit("EMPTY_DEATHS_ARRAY");
+        for (var id = begin; id < end; id++) {
+          death = await dns.getDeath(id);
+          if (checkDeathObjectValid(death)) {
+            commit("ADD_DEATH", death);
+          }
         }
       }
     },

@@ -1,7 +1,10 @@
 <template>
   <section id="home" class="container">
+    <div class="columns ">
+      <Paginator class="column is-12" :current-page="page" />
+    </div>
     <div
-      class="columns is-variable is-3-mobile is-3-tablet is-6-desktop is-8-widescreen is-8-fullhd is-centered"
+      class="columns is-multiline is-variable is-3-mobile is-3-tablet is-3-desktop is-3-widescreen is-3-fullhd is-centered"
     >
       <div
         class="column is-6-tablet is-4-desktop is-3-widescreen is-3-fullhd"
@@ -10,9 +13,6 @@
       >
         <DeathCard :death="death" class="has-text-left" />
       </div>
-    </div>
-    <div class="columns ">
-      <Paginator class="column is-12" :current-page="page" />
     </div>
   </section>
 </template>
@@ -37,7 +37,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["fetchDeathNotes"])
+    ...mapActions(["fetchDeathNotes"]),
+    fetchNotes() {
+      this.fetchDeathNotes(this.page);
+    }
   },
   computed: {
     ...mapState(["deaths"])
@@ -53,7 +56,15 @@ export default {
     // console.log(this.page);
   },
   created() {
-    this.fetchDeathNotes();
+    console.log("FETCH - CREATED");
+    this.fetchNotes();
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    page(newValue, oldValue) {
+      console.log("FETCH - WATCHER");
+      this.fetchNotes();
+    }
   }
 };
 </script>
