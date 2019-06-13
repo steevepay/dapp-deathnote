@@ -1,5 +1,10 @@
 <template>
-  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <nav
+    class="navbar is-dark"
+    role="navigation"
+    aria-label="main navigation"
+    style="margin-bottom: 12px;"
+  >
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
         <img

@@ -10,9 +10,18 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: "/",
+      path: "/:page?",
       name: "home",
-      component: Home
+      component: Home,
+      props: route => {
+        let props = {};
+        if (route.params.hasOwnProperty("page") && route.params.page) {
+          props["page"] = parseInt(route.params.page);
+        } else {
+          props["page"] = 1;
+        }
+        return props;
+      }
     },
     {
       path: "/my-notes",
