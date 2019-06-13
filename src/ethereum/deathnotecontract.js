@@ -1,5 +1,8 @@
 import web3 from "./web3";
 import DeathNote from "@/../build/contracts/Deathnote.json";
+import store from "@/store/store";
+
+// console.log();
 
 const dnc = new web3.eth.Contract(
   DeathNote.abi,
@@ -22,7 +25,10 @@ dnc.events
   )
   // eslint-disable-next-line no-unused-vars
   .on("data", event => {
-    console.log(event); // same results as the optional callback above
+    if (event && event.hasOwnProperty("returnValues")) {
+      store.dispatch("addNewDeath", event.returnValues);
+      console.log(event); // same results as the optional callback above
+    }
   })
   // eslint-disable-next-line no-unused-vars
   .on("changed", event => {

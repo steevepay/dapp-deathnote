@@ -6,7 +6,7 @@ import "./Safemath.sol";
 contract Deathnote is Ownable {
 
     using SafeMath for uint256;
-    event NewDeath(uint id, address owner, string _name, string _conditions, string _date, string _img);
+    event NewDeath(uint id, address owner, string name, string conditions, string timeOfDeath, string img);
 
     struct Death{
         address owner;
@@ -29,9 +29,9 @@ contract Deathnote is Ownable {
         emit NewDeath( id, msg.sender, _name, _conditions, _date, _img);
     }
     
-    function getDeath(uint _id) public view returns (address owner, string memory name, string memory conditions, string memory timeOfDeath, string memory img) {
+    function getDeath(uint _id) public view returns (uint id, address owner, string memory name, string memory conditions, string memory timeOfDeath, string memory img) {
         require(_id >= 0 && _id < deaths.length);
-        return(deaths[_id].owner, deaths[_id].name, deaths[_id].conditions, deaths[_id].timeOfDeath, deaths[_id].img);
+        return(_id, deaths[_id].owner, deaths[_id].name, deaths[_id].conditions, deaths[_id].timeOfDeath, deaths[_id].img);
     }
 
     function getDeathsLength() public view returns (uint) {

@@ -7,17 +7,24 @@ import * as web3 from "@/services/web3";
 import * as dns from "@/services/dns";
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
+  state: {
+    deaths: []
+  },
+  mutations: {
+    ADD_DEATH(state, death) {
+      state.deaths.push(death);
+    }
+  },
   actions: {
     // eslint-disable-next-line no-unused-vars
     async fetchDeathNotes({ commit }) {
-      let deaths = [];
       const nbr = await dns.getDeathsLength();
       for (var id = 0; id < nbr; id++) {
-        deaths.push((await dns.getDeath(id))[0]);
+        commit("ADD_DEATH", await dns.getDeath(id));
       }
-      console.log(deaths);
+    },
+    addNewDeath({ commit }, death) {
+      commit("ADD_DEATH", death);
     }
   },
   getters: {

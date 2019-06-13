@@ -5,7 +5,7 @@ import * as web3 from "@/services/web3";
 export const getDeath = async _id => {
   let death = undefined;
   try {
-    death = await deathnote.methods.deaths(_id).call();
+    death = await deathnote.methods.getDeath(_id).call();
   } catch (err) {
     console.log(err);
   }
