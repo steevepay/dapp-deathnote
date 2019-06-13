@@ -58,7 +58,7 @@ export default {
   },
   data() {
     return {
-      total: 48,
+      total: 4,
       current: 1,
       perPage: 12,
       order: "is-centered",

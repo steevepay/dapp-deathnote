@@ -43,8 +43,17 @@ export default {
     ...mapState(["deaths"])
   },
   async mounted() {
-    await this.fetchDeathNotes();
-    console.log(this.page);
+    // await this.fetchNumberOfDeathNotes().then(() => {
+    //   if (this.page > Math.ceil(this.numberOfDeaths / 12) || this.page < 1) {
+    //     this.$router.push({ name: "404" });
+    //     // ERROR PAGE
+    //   } else {
+    //   }
+    // });
+    // console.log(this.page);
+  },
+  created() {
+    this.fetchDeathNotes();
   }
 };
 </script>
