@@ -7,28 +7,45 @@
       scroll="keep"
       @close="closeModal()"
     >
-      <div class="card">
-        <div class="card-content columns is-multiline">
-          <div class="column is-12">
-            <div class="media-center">
-              <figure class="image is-128x128" style="margin:auto">
-                <img
-                  :src="
-                    `https://avatars.dicebear.com/v2/avataaars/${name}.svg?options[topChance]=78&options[facialHair][]=medium&options[facialHairChance]=0&options[eyes][]=cry&options[eyes][]=surprised&options[eyes][]=squint&options[eyes][]=dizzy&options[mouth][]=vomit&options[mouth][]=twinkle&options[mouth][]=scream&options[mouth][]=sad&options[mouth][]=grimace&options[mouth][]=disbelief&options[mouth][]=concerned&options[mouth][]=serious`
-                  "
-                  alt="Placeholder image"
-                  class="is-rounded"
-                />
-              </figure>
+      <form action="" ref="form" @submit.prevent="sendTheNote()">
+        <div class="card">
+          <div class="card-content columns is-multiline">
+            <div class="column is-12">
+              <div class="media-center">
+                <figure class="image is-128x128" style="margin:auto">
+                  <img
+                    :src="
+                      `https://avatars.dicebear.com/v2/avataaars/${
+                        model.name
+                      }.svg?options[topChance]=78&options[facialHair][]=medium&options[facialHairChance]=0&options[eyes][]=cry&options[eyes][]=surprised&options[eyes][]=squint&options[eyes][]=dizzy&options[mouth][]=vomit&options[mouth][]=twinkle&options[mouth][]=scream&options[mouth][]=sad&options[mouth][]=grimace&options[mouth][]=disbelief&options[mouth][]=concerned&options[mouth][]=serious`
+                    "
+                    alt="Placeholder image"
+                    class="is-rounded"
+                  />
+                </figure>
+              </div>
             </div>
-          </div>
-          <div class="column is-12">
-            <form action="">
+            <div class="column is-12">
               <b-field label="Name">
-                <b-input icon="account-circle" rounded v-model="name"></b-input>
+                <b-input
+                  @input="checkFormValid()"
+                  icon="account-circle"
+                  rounded
+                  v-model="model.name"
+                  required
+                  validation-message="This note will not take effect unless you write the subject's name."
+                ></b-input>
               </b-field>
-              <b-field label="Conditions">
-                <b-input rounded type="textarea" v-model="conditions"></b-input>
+              <b-field
+                label="Conditions"
+                message="without conditions, it will die of a heart attack"
+              >
+                <b-input
+                  rounded
+                  type="textarea"
+                  maxlength="100"
+                  v-model="model.conditions"
+                ></b-input>
               </b-field>
               <b-field label="Select a date">
                 <b-datepicker
@@ -36,7 +53,7 @@
                   icon="calendar-today"
                   :min-date="minDate"
                   position="is-top-left"
-                  v-model="date"
+                  v-model="model.date"
                 >
                 </b-datepicker>
               </b-field>
@@ -45,21 +62,24 @@
                   rounded
                   icon="clock"
                   :min-time="minTime"
-                  v-model="time"
+                  v-model="model.time"
                   position="is-top-right"
                 >
                   <b-field>
                     <p class="control">
                       <button
                         class="button is-primary"
-                        @click.prevent="time = new Date()"
+                        @click.prevent="model.time = new Date()"
                       >
                         <b-icon icon="clock"></b-icon>
                         <span>Now</span>
                       </button>
                     </p>
                     <p class="control">
-                      <button class="button is-danger" @click="time = null">
+                      <button
+                        class="button is-danger"
+                        @click.prevent="model.time = null"
+                      >
                         <b-icon icon="close"></b-icon>
                         <span>Clear</span>
                       </button>
@@ -70,24 +90,35 @@
               <b-field label="Value (ETH)">
                 <b-input
                   rounded
-                  type="number"
                   placeholder="0.001"
                   icon="currency-eth"
+                  pattern="^[0-9]*([.][0-9]+)?$"
+                  required
+                  tep="0.0000000001"
+                  validation-message="Minimum of 0.001 ether"
+                  v-model="model.value"
+                  @input="checkFormValid()"
                 >
                 </b-input>
               </b-field>
-            </form>
+            </div>
           </div>
+          <footer class="card-footer">
+            <a class="card-footer-item" @click.prevent="closeModal()">
+              Cancel
+            </a>
+            <!-- :disabled="formValid" -->
+            <a
+              href="#"
+              class="card-footer-item"
+              :class="{ 'btn-disabled': !formValid }"
+              @click.prevent="checkFormValidBeforeSubmit()"
+            >
+              Send
+            </a>
+          </footer>
         </div>
-        <footer class="card-footer">
-          <a href="#" class="card-footer-item" @click="closeModal()">
-            Cancel
-          </a>
-          <a href="#" class="card-footer-item">
-            Send
-          </a>
-        </footer>
-      </div>
+      </form>
     </b-modal>
   </section>
 </template>
@@ -100,32 +131,56 @@ export default {
       default: false
     }
   },
-  methods: {
-    closeModal() {
-      this.$emit("toggle-write-modal", false);
-    }
-  },
   data() {
     return {
       modalActive: false,
       isComponentModalActive: true,
-      name: "",
-      conditions: "",
-      date: "",
-      time: "",
-      price: 0,
+      model: {
+        name: "",
+        conditions: "",
+        date: null,
+        time: null,
+        value: null
+      },
       minDate: null,
-      minTime: null
+      minTime: null,
+      formValid: false
     };
+  },
+  computed: {
+    //.;
+  },
+  methods: {
+    closeModal() {
+      this.$emit("toggle-write-modal", false);
+    },
+    checkFormValidBeforeSubmit() {
+      console.log(this.$refs.form.checkValidity());
+      console.log(this.formValid());
+      if (this.formValid) {
+        this.$refs.form.submit();
+      }
+    },
+    sendTheNote() {
+      console.log("call vuex action dispatch");
+    },
+    checkFormValid() {
+      this.formValid = false;
+      if (this.$refs.hasOwnProperty("form")) {
+        this.formValid = this.$refs.form.checkValidity();
+      }
+    }
   },
   created() {
     this.minDate = new Date();
     this.minDate.setDate(this.minDate.getDate() - 1);
-    this.date = new Date();
-
+    this.model.date = new Date();
+    // this.minTime = "01:32";
     this.minTime = new Date();
-    this.minTime.setMinutes(0);
-    this.time = new Date();
+    // this.minTime.setMinutes(0);
+    this.model.time = new Date();
+
+    this.model.conditions = "dies of a heart attack";
   },
   watch: {
     isActive: {
@@ -139,4 +194,13 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.btn-disabled,
+.btn-disabled:visited,
+.btn-disabled:visited,
+.btn-disabled:visited,
+.btn-disabled:visited {
+  cursor: not-allowed;
+  color: grey;
+}
+</style>
