@@ -67,13 +67,11 @@ export default {
     // console.log(this.page);
   },
   created() {
-    console.log("FETCH - CREATED");
     this.fetchNotes();
   },
   watch: {
     // eslint-disable-next-line no-unused-vars
     page(n, o) {
-      console.log("FETCH - WATCHER");
       this.fetchNotes();
     },
     // eslint-disable-next-line no-unused-vars

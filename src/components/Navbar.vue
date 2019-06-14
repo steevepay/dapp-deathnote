@@ -74,7 +74,10 @@
               style="margin-right: 8px;"
               type="is-dark"
             >
-              <b-button type="is-success">
+              <b-button
+                type="is-success"
+                @click="$emit('toggle-write-modal', true)"
+              >
                 <b-icon icon="plus"></b-icon>
               </b-button>
             </b-tooltip>
@@ -124,9 +127,6 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["walletLinked", "isLoading"])
-  },
-  created() {
-    console.log(this.isLoading);
   }
 };
 </script>
