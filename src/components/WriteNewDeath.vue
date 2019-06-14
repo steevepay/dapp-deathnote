@@ -27,11 +27,11 @@
             </div>
             <div class="column is-12">
               <b-field label="Name">
+                <!-- @input="checkFormValid()" -->
                 <b-input
-                  @input="checkFormValid()"
                   icon="account-circle"
                   rounded
-                  v-model="model.name"
+                  v-model.lazy="model.name"
                   required
                   validation-message="This note will not take effect unless you write the subject's name."
                 ></b-input>
@@ -44,7 +44,7 @@
                   rounded
                   type="textarea"
                   maxlength="100"
-                  v-model="model.conditions"
+                  v-model.lazy="model.conditions"
                 ></b-input>
               </b-field>
               <b-field label="Select a date">
@@ -53,7 +53,7 @@
                   icon="calendar-today"
                   :min-date="minDate"
                   position="is-top-left"
-                  v-model="model.date"
+                  v-model.lazy="model.date"
                 >
                 </b-datepicker>
               </b-field>
@@ -62,7 +62,7 @@
                   rounded
                   icon="clock"
                   :min-time="minTime"
-                  v-model="model.time"
+                  v-model.lazy="model.time"
                   position="is-top-right"
                 >
                   <b-field>
@@ -92,11 +92,10 @@
                   rounded
                   placeholder="0.001"
                   icon="currency-eth"
-                  pattern="^[0-9]*([.][0-9]+)?$"
+                  pattern="^([0-9]+([.][0-9]*)?|[.][0-9]+)$"
                   required
-                  tep="0.0000000001"
                   validation-message="Minimum of 0.001 ether"
-                  v-model="model.value"
+                  v-model.lazy="model.value"
                   @input="checkFormValid()"
                 >
                 </b-input>
@@ -165,10 +164,12 @@ export default {
       console.log("call vuex action dispatch");
     },
     checkFormValid() {
-      this.formValid = false;
-      if (this.$refs.hasOwnProperty("form")) {
-        this.formValid = this.$refs.form.checkValidity();
-      }
+      // console.log();
+      // this.$refs.form["10"].validity.valid = false;
+      // this.formValid = false;
+      // if (this.$refs.hasOwnProperty("form")) {
+      //   this.formValid = this.$refs.form.checkValidity();
+      // }
     }
   },
   created() {

@@ -9,6 +9,11 @@ import Buefy from "buefy";
 Vue.use(Buefy);
 /* ================== */
 
+/* _____ VUELIDATE ______ */
+// import Vuelidate from "vuelidate";
+// Vue.use(Vuelidate);
+/* ================== */
+
 Vue.config.productionTip = false;
 
 new Vue({
