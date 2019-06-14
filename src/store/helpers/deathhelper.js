@@ -1,5 +1,6 @@
 export const checkDeathObjectValid = death => {
   if (
+    typeof death !== "object" ||
     !death.hasOwnProperty("name") ||
     death.name === "" ||
     !death.hasOwnProperty("conditions") ||
@@ -11,4 +12,11 @@ export const checkDeathObjectValid = death => {
     return false;
   }
   return true;
+};
+
+export const checkPageNumber = (page, totalDeaths, mapPerPages) => {
+  if (page < 1 || Math.ceil(totalDeaths / mapPerPages) < page) {
+    return true;
+  }
+  return false;
 };

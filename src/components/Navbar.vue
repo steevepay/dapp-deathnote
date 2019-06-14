@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="navbar is-dark"
+    class="navbar is-fixed-top is-dark"
     role="navigation"
     aria-label="main navigation"
     style="margin-bottom: 12px;"
@@ -108,6 +108,13 @@
         </a>
       </div>
     </div>
+    <progress
+      class="progress is-primary"
+      max="100"
+      v-show="isLoading"
+      style="margin:0 !important;height:3px; position:fixed;top:51px"
+      >15%</progress
+    >
   </nav>
 </template>
 
@@ -115,13 +122,12 @@
 import { mapGetters } from "vuex";
 
 export default {
-  data() {
-    return {};
-  },
   computed: {
-    ...mapGetters(["walletLinked"])
+    ...mapGetters(["walletLinked", "isLoading"])
   },
-  created() {}
+  created() {
+    console.log(this.isLoading);
+  }
 };
 </script>
 

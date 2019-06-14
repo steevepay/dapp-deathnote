@@ -1,11 +1,18 @@
 <template>
   <section id="home" class="container">
-    <div class="columns ">
-      <Paginator class="column is-12" :current-page="page" />
+    <div class="columns is-multiline">
+      <div class="column is-12">
+        <Paginator :current-page="page" />
+      </div>
+      <div
+        class="column is-12"
+        style="padding-top: 0;
+    padding-bottom: 0;"
+      >
+        <OrderComponent />
+      </div>
     </div>
-    <div
-      class="columns is-multiline is-variable is-3-mobile is-3-tablet is-3-desktop is-3-widescreen is-3-fullhd is-centered"
-    >
+    <div class="columns is-multiline  is-centered is-variable is-2">
       <div
         class="column is-6-tablet is-4-desktop is-3-widescreen is-3-fullhd"
         v-for="(death, $index) in deaths"
@@ -23,12 +30,15 @@ import { mapActions, mapState } from "vuex";
 // COMPONENTS
 import DeathCard from "@/components/DeathCard.vue";
 import Paginator from "@/components/Paginator.vue";
+import OrderComponent from "@/components/Filter.vue";
 
 export default {
   name: "home",
   components: {
     DeathCard,
-    Paginator
+    // eslint-disable-next-line vue/no-unused-components
+    Paginator,
+    OrderComponent
   },
   props: {
     page: {
@@ -36,6 +46,7 @@ export default {
       default: 1
     }
   },
+
   methods: {
     ...mapActions(["fetchDeathNotes"]),
     fetchNotes() {
@@ -43,7 +54,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["deaths"])
+    ...mapState(["deaths", "filter"])
   },
   async mounted() {
     // await this.fetchNumberOfDeathNotes().then(() => {
@@ -61,10 +72,21 @@ export default {
   },
   watch: {
     // eslint-disable-next-line no-unused-vars
-    page(newValue, oldValue) {
+    page(n, o) {
       console.log("FETCH - WATCHER");
+      this.fetchNotes();
+    },
+    // eslint-disable-next-line no-unused-vars
+    filter(n, o) {
       this.fetchNotes();
     }
   }
 };
 </script>
+
+<style lang="scss">
+.columns {
+  margin-left: 0rem !important;
+  margin-right: 0rem !important;
+}
+</style>

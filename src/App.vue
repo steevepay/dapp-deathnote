@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Navbar @toggle-rules-modal="handleRulesModalEvents" />
-    <router-view />
+    <router-view style="margin-top:12px" />
     <Rules
       :is-active="modalRulesActive"
       @toggle-rules-modal="handleRulesModalEvents"
