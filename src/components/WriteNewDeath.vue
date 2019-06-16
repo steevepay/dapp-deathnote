@@ -7,7 +7,7 @@
       scroll="keep"
       @close="closeModal()"
     >
-      <form action="" ref="form" @submit.prevent="sendTheNote()">
+      <form ref="form">
         <div class="card">
           <div class="card-content columns is-multiline">
             <div class="column is-12">
@@ -51,14 +51,16 @@
               >
                 <b-input
                   rounded
+                  name="conditions"
                   type="textarea"
-                  maxlength="100"
+                  maxlength="200"
                   v-model.lazy="model.conditions"
                 ></b-input>
               </b-field>
               <b-field label="Select a date">
                 <b-datepicker
                   rounded
+                  name="date"
                   icon="calendar-today"
                   :min-date="minDate"
                   position="is-top-left"
@@ -69,6 +71,7 @@
               <b-field label="Select time">
                 <b-timepicker
                   rounded
+                  name="time"
                   icon="clock"
                   :min-time="minTime"
                   v-model.lazy="model.time"
@@ -128,12 +131,13 @@
             <a
               href="#"
               class="card-footer-item"
-              :class="{ 'btn-disabled': !formValid }"
+              :class="{ 'btn-disabled': errors.any() || !formCompleted }"
               @click.prevent="checkFormValidBeforeSubmit()"
             >
               Send
             </a>
           </footer>
+          <b-loading :is-full-page="false" :active="isLoading"></b-loading>
         </div>
       </form>
     </b-modal>
@@ -141,6 +145,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   props: {
     isActive: {
@@ -160,38 +165,56 @@ export default {
         value: null
       },
       minDate: null,
-      minTime: null
+      minTime: null,
+      isLoading: false
     };
   },
   computed: {
-    formValid() {
-      return this.errors.any();
+    formCompleted() {
+      return this.model.name && this.model.value;
     }
   },
   methods: {
+    ...mapActions(["submitNewDeath"]),
     closeModal() {
       this.$emit("toggle-write-modal", false);
     },
     checkFormValidBeforeSubmit() {
-      this.$validator.validate().then(result => {
-        console.log(result);
+      this.$validator.validate().then(valid => {
+        if (valid === true) {
+          this.submitForm();
+        }
       });
-      // console.log(this.$refs.form.checkValidity());
-      // console.log(this.formValid());
-      // if (this.formValid) {
-      //   this.$refs.form.submit();
-      // }
     },
-    sendTheNote() {
-      console.log("call vuex action dispatch");
-    },
-    checkFormValid() {
-      // console.log();
-      // this.$refs.form["10"].validity.valid = false;
-      // this.formValid = false;
-      // if (this.$refs.hasOwnProperty("form")) {
-      //   this.formValid = this.$refs.form.checkValidity();
-      // }
+    async submitForm() {
+      this.isLoading = true;
+      let now = new Date();
+      let date = this.model.date
+        ? new Date(
+            this.model.date.getFullYear(),
+            this.model.date.getMonth(),
+            this.model.date.getDate(),
+            0,
+            0,
+            0
+          )
+        : now;
+      if (this.model.time) {
+        date.setHours(this.model.time.getHours());
+        date.setMinutes(this.model.time.getMinutes());
+      } else {
+        date.setHours(now.getHours());
+        date.setMinutes(now.getMinutes());
+      }
+      await this.submitNewDeath({
+        name: this.model.name,
+        conditions: this.model.conditions,
+        date: date.toString(),
+        img: "",
+        value: this.model.value
+      });
+      this.isLoading = false;
+      this.closeModal();
     }
   },
   created() {
@@ -206,8 +229,13 @@ export default {
     this.model.conditions = "dies of a heart attack";
 
     this.$validator.extend("minimumFee", value => {
+      // console.log(parseFloat(value) >= 0.001);
       return parseFloat(value) >= 0.001;
     });
+    // this.$validator.extend("minimumFee", {
+    //   getMessage: field => "The " + field + " value is not truthy.",
+    //   validate: value => !value
+    // });
   },
   watch: {
     isActive: {

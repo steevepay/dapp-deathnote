@@ -12,7 +12,7 @@
         <OrderComponent />
       </div>
     </div>
-    <div class="columns is-multiline  is-centered is-variable is-2">
+    <div class="columns is-multiline is-vcentered is-centered is-variable is-2">
       <div
         class="column is-6-tablet is-4-desktop is-3-widescreen is-3-fullhd"
         v-for="(death, $index) in deaths"
@@ -57,17 +57,7 @@ export default {
     ...mapState(["deaths", "filter"])
   },
   async mounted() {
-    // await this.fetchNumberOfDeathNotes().then(() => {
-    //   if (this.page > Math.ceil(this.numberOfDeaths / 12) || this.page < 1) {
-    //     this.$router.push({ name: "404" });
-    //     // ERROR PAGE
-    //   } else {
-    //   }
-    // });
-    // console.log(this.page);
-  },
-  created() {
-    this.fetchNotes();
+    await this.fetchNotes();
   },
   watch: {
     // eslint-disable-next-line no-unused-vars

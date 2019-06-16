@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-content">
-      <div class="media">
+      <div class="media" style="margin-bottom:15px">
         <div class="media-left">
           <figure class="image is-48x48">
             <img
@@ -29,12 +29,25 @@
       </div>
 
       <div class="content">
-        {{ death.conditions }}
+        <p style="overflow-wrap: break-word;margin:0">{{ death.conditions }}</p>
+        <a>{{ dateDeath }}</a>
         <!-- <a href="#">#css</a> <a href="#">#responsive</a> -->
-        <br />
-        <time datetime="2016-1-1">Time of death: {{ death.timeOfDeath }}</time>
       </div>
     </div>
+    <footer class="card-footer">
+      <a
+        href="#"
+        class="card-footer-item"
+        style="padding-top: 3px;padding-bottom: 3px;"
+        >Share</a
+      >
+      <a
+        href="#"
+        class="card-footer-item"
+        style="padding-top: 3px;padding-bottom: 3px;"
+        >Donate to 0x...</a
+      >
+    </footer>
   </div>
 </template>
 
@@ -44,6 +57,11 @@ export default {
     death: {
       type: Object,
       required: true
+    }
+  },
+  computed: {
+    dateDeath() {
+      return new Date(this.death.timeOfDeath).toLocaleString();
     }
   }
 };

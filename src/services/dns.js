@@ -70,7 +70,7 @@ export const addDeath = async (_name, _conditions, _date, _img, _value) => {
   try {
     await deathnote.methods.addDeath(_name, _conditions, _date, _img).send({
       from: account,
-      value: _value
+      value: web3.toWei(_value, "ether")
     });
   } catch (err) {
     console.log(err);

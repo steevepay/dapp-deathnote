@@ -99,6 +99,11 @@ export default new Vuex.Store({
       }
       commit("LOADING_END");
     },
+
+    // eslint-disable-next-line no-unused-vars
+    async submitNewDeath({ commit }, { name, conditions, date, img, value }) {
+      return await dns.addDeath(name, conditions, date, img, value);
+    },
     addNewDeath({ commit, state }, death) {
       death["new"] = true;
       if (checkDeathObjectValid(death)) {
