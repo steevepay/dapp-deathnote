@@ -10,8 +10,8 @@ Vue.use(Buefy);
 /* ================== */
 
 /* _____ VUELIDATE ______ */
-// import Vuelidate from "vuelidate";
-// Vue.use(Vuelidate);
+import VeeValidate from "vee-validate";
+Vue.use(VeeValidate);
 /* ================== */
 
 Vue.config.productionTip = false;

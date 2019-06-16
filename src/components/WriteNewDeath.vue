@@ -26,14 +26,23 @@
               </div>
             </div>
             <div class="column is-12">
-              <b-field label="Name">
+              <b-field
+                label="Name"
+                :type="errors.has('name') ? 'is-danger' : ''"
+                :message="
+                  errors.has('name')
+                    ? 'This note will not take effect unless you write the subject\'s name.'
+                    : ''
+                "
+              >
                 <!-- @input="checkFormValid()" -->
                 <b-input
                   icon="account-circle"
                   rounded
                   v-model.lazy="model.name"
-                  required
-                  validation-message="This note will not take effect unless you write the subject's name."
+                  v-validate="'required'"
+                  name="name"
+                  id="name"
                 ></b-input>
               </b-field>
               <b-field
@@ -87,17 +96,26 @@
                   </b-field>
                 </b-timepicker>
               </b-field>
-              <b-field label="Value (ETH)">
+              <!-- pattern="^([0-9]+([.][0-9]*)?|[.][0-9]+)$"
+                  required 
+                  validation-message="Minimum of 0.001 ether"
+                  @input="checkFormValid()"
+              -->
+              <b-field
+                label="Value (ETH)"
+                :type="errors.has('fee') ? 'is-danger' : ''"
+                :message="errors.has('fee') ? 'Minimum of 0.001 ether' : ''"
+              >
                 <b-input
                   rounded
+                  id="fee"
+                  name="fee"
+                  v-validate="'required|minimumFee'"
                   placeholder="0.001"
                   icon="currency-eth"
-                  pattern="^([0-9]+([.][0-9]*)?|[.][0-9]+)$"
-                  required
-                  validation-message="Minimum of 0.001 ether"
                   v-model.lazy="model.value"
-                  @input="checkFormValid()"
                 >
+                  <!-- required| -->
                 </b-input>
               </b-field>
             </div>
@@ -142,23 +160,27 @@ export default {
         value: null
       },
       minDate: null,
-      minTime: null,
-      formValid: false
+      minTime: null
     };
   },
   computed: {
-    //.;
+    formValid() {
+      return this.errors.any();
+    }
   },
   methods: {
     closeModal() {
       this.$emit("toggle-write-modal", false);
     },
     checkFormValidBeforeSubmit() {
-      console.log(this.$refs.form.checkValidity());
-      console.log(this.formValid());
-      if (this.formValid) {
-        this.$refs.form.submit();
-      }
+      this.$validator.validate().then(result => {
+        console.log(result);
+      });
+      // console.log(this.$refs.form.checkValidity());
+      // console.log(this.formValid());
+      // if (this.formValid) {
+      //   this.$refs.form.submit();
+      // }
     },
     sendTheNote() {
       console.log("call vuex action dispatch");
@@ -182,6 +204,10 @@ export default {
     this.model.time = new Date();
 
     this.model.conditions = "dies of a heart attack";
+
+    this.$validator.extend("minimumFee", value => {
+      return parseFloat(value) >= 0.001;
+    });
   },
   watch: {
     isActive: {
