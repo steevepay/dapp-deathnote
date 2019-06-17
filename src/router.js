@@ -34,8 +34,8 @@ export default new Router({
         }
         return props;
       },
-      beforeEnter: (to, from, next) => {
-        store.dispatch("fetchNumberOfDeathNotes").then(totalOfDeath => {
+      beforeEnter: async (to, from, next) => {
+        await store.dispatch("fetchNumberOfDeathNotes").then(totalOfDeath => {
           if (
             to.params.page >
               Math.ceil(totalOfDeath / store.state.maxPerPages) ||

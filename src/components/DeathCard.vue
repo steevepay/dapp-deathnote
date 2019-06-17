@@ -1,6 +1,23 @@
 <template>
   <div class="card">
     <div class="card-content">
+      <b-dropdown
+        aria-role="list"
+        style="position: absolute;right: 19px;bottom: 19px;"
+        position="is-bottom-left"
+      >
+        <b-button slot="trigger" type="is-text" class="btn-more">
+          <b-icon icon="dots-vertical" size="is-small" class="btn-more-icon">
+          </b-icon>
+        </b-button>
+
+        <b-dropdown-item
+          aria-role="listitem"
+          @click="$emit('donate', death.owner)"
+          >Donate to the writer</b-dropdown-item
+        >
+        <b-dropdown-item aria-role="listitem">Share on Twitter</b-dropdown-item>
+      </b-dropdown>
       <div class="media" style="margin-bottom:15px">
         <div class="media-left">
           <figure class="image is-48x48">
@@ -15,7 +32,6 @@
         </div>
         <div class="media-content">
           <p class="title is-4" style="margin:0">{{ death.name }}</p>
-
           <div class="is-6">
             <span
               v-if="death.hasOwnProperty('new') && death.new === true"
@@ -24,7 +40,6 @@
               New
             </span>
           </div>
-          <!-- <p class="subtitle is-6">@johnsmith</p> -->
         </div>
       </div>
 
@@ -34,20 +49,6 @@
         <!-- <a href="#">#css</a> <a href="#">#responsive</a> -->
       </div>
     </div>
-    <footer class="card-footer">
-      <a
-        href="#"
-        class="card-footer-item"
-        style="padding-top: 3px;padding-bottom: 3px;"
-        >Share</a
-      >
-      <a
-        href="#"
-        class="card-footer-item"
-        style="padding-top: 3px;padding-bottom: 3px;"
-        >Donate to 0x...</a
-      >
-    </footer>
   </div>
 </template>
 
@@ -67,4 +68,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.btn-more {
+  // padding: 12px;
+}
+
+.btn-more-icon {
+  // margin-top: -7px !important;
+}
+</style>

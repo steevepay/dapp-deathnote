@@ -1,12 +1,14 @@
 import deathnote from "@/ethereum/deathnotecontract.js";
 // eslint-disable-next-line no-unused-vars
 import * as web3 from "@/services/web3";
+import store from "@/store/store";
 
 export const getDeath = async _id => {
   let death = undefined;
   try {
     death = await deathnote.methods.getDeath(_id).call();
   } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
     console.log(err);
   }
   return death;
@@ -17,6 +19,7 @@ export const getDeathsLength = async () => {
   try {
     length = await deathnote.methods.getDeathsLength().call();
   } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
     console.log(err);
   }
   return length;
@@ -27,6 +30,7 @@ export const getDeathFee = async () => {
   try {
     fee = await deathnote.methods.getDeathFee().call();
   } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
     console.log(err);
   }
   return web3.fromWei(fee, "ether");
@@ -40,6 +44,7 @@ export const setDeathFee = async _fee => {
       from: account
     });
   } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
     console.log(err);
   }
   return fee;
@@ -60,6 +65,7 @@ export const getDeathsCounterOwner = async _address => {
   try {
     length = await deathnote.methods.deathsCounterOwner(_address).call();
   } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
     console.log(err);
   }
   return length;
@@ -68,11 +74,21 @@ export const getDeathsCounterOwner = async _address => {
 export const addDeath = async (_name, _conditions, _date, _img, _value) => {
   const account = await web3.getAccount();
   try {
-    await deathnote.methods.addDeath(_name, _conditions, _date, _img).send({
-      from: account,
-      value: web3.toWei(_value, "ether")
-    });
+    await deathnote.methods
+      .addDeath(_name, _conditions, _date, _img)
+      .send({
+        from: account,
+        value: web3.toWei(_value, "ether")
+      })
+      // eslint-disable-next-line no-unused-vars
+      .on("receipt", receipt => {
+        store.dispatch("toasters/toastSuccess", {
+          message: "The note has been written on the blockchain!",
+          duration: 6000
+        });
+      });
   } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
     console.log(err);
   }
 };
@@ -82,6 +98,7 @@ export const getContractBalance = async () => {
   try {
     balance = await deathnote.methods.getBalance().call();
   } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
     console.log(err);
   }
   return web3.fromWei(balance, "ether");

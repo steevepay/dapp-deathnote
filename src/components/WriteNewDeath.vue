@@ -35,7 +35,6 @@
                     : ''
                 "
               >
-                <!-- @input="checkFormValid()" -->
                 <b-input
                   icon="account-circle"
                   rounded
@@ -99,11 +98,6 @@
                   </b-field>
                 </b-timepicker>
               </b-field>
-              <!-- pattern="^([0-9]+([.][0-9]*)?|[.][0-9]+)$"
-                  required 
-                  validation-message="Minimum of 0.001 ether"
-                  @input="checkFormValid()"
-              -->
               <b-field
                 label="Value (ETH)"
                 :type="errors.has('fee') ? 'is-danger' : ''"
@@ -118,7 +112,6 @@
                   icon="currency-eth"
                   v-model.lazy="model.value"
                 >
-                  <!-- required| -->
                 </b-input>
               </b-field>
             </div>
@@ -127,7 +120,6 @@
             <a class="card-footer-item" @click.prevent="closeModal()">
               Cancel
             </a>
-            <!-- :disabled="formValid" -->
             <a
               href="#"
               class="card-footer-item"
@@ -156,7 +148,6 @@ export default {
   data() {
     return {
       modalActive: false,
-      isComponentModalActive: true,
       model: {
         name: "",
         conditions: "",
@@ -208,13 +199,18 @@ export default {
       }
       await this.submitNewDeath({
         name: this.model.name,
-        conditions: this.model.conditions,
+        conditions: this.isBlank(this.model.conditions)
+          ? "dies of a heart attack"
+          : this.model.conditions,
         date: date.toString(),
         img: "",
         value: this.model.value
       });
       this.isLoading = false;
       this.closeModal();
+    },
+    isBlank(str) {
+      return !str || /^\s*$/.test(str) || str.replace(/\s/g, "") === "";
     }
   },
   created() {
@@ -229,13 +225,8 @@ export default {
     this.model.conditions = "dies of a heart attack";
 
     this.$validator.extend("minimumFee", value => {
-      // console.log(parseFloat(value) >= 0.001);
       return parseFloat(value) >= 0.001;
     });
-    // this.$validator.extend("minimumFee", {
-    //   getMessage: field => "The " + field + " value is not truthy.",
-    //   validate: value => !value
-    // });
   },
   watch: {
     isActive: {

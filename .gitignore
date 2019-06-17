@@ -81,3 +81,5 @@ dist/
 yarn-error.log
 
 # End of https://www.gitignore.io/api/vuejs,macos,soliditytruffle
+
+.secret

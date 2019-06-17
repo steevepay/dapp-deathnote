@@ -1,14 +1,10 @@
 <template>
   <section id="home" class="container">
     <div class="columns is-multiline">
-      <div class="column is-12">
+      <!-- <div class="column is-12">
         <Paginator :current-page="page" />
-      </div>
-      <div
-        class="column is-12"
-        style="padding-top: 0;
-    padding-bottom: 0;"
-      >
+      </div> -->
+      <div class="column is-12" style="padding-bottom: 0;">
         <OrderComponent />
       </div>
     </div>
@@ -18,9 +14,24 @@
         v-for="(death, $index) in deaths"
         :key="$index"
       >
-        <DeathCard :death="death" class="has-text-left" />
+        <DeathCard
+          :death="death"
+          class="has-text-left"
+          @donate="handleDonationEvents"
+        />
+        <SkeletonCard />
       </div>
     </div>
+    <div class="columns">
+      <div class="column is-12">
+        <Paginator :current-page="page" />
+      </div>
+    </div>
+    <Donate
+      :is-active="modalDonateActive"
+      :addressToDonate="addressToDonate"
+      @toggle-donate-modal="handleDonateModalEvents"
+    />
   </section>
 </template>
 
@@ -29,16 +40,19 @@
 import { mapActions, mapState } from "vuex";
 // COMPONENTS
 import DeathCard from "@/components/DeathCard.vue";
+import SkeletonCard from "@/components/SkeletonCard.vue";
 import Paginator from "@/components/Paginator.vue";
 import OrderComponent from "@/components/Filter.vue";
+import Donate from "@/components/Donate.vue";
 
 export default {
   name: "home",
   components: {
     DeathCard,
-    // eslint-disable-next-line vue/no-unused-components
     Paginator,
-    OrderComponent
+    OrderComponent,
+    Donate,
+    SkeletonCard
   },
   props: {
     page: {
@@ -46,11 +60,23 @@ export default {
       default: 1
     }
   },
-
+  data() {
+    return {
+      modalDonateActive: false,
+      addressToDonate: ""
+    };
+  },
   methods: {
     ...mapActions(["fetchDeathNotes"]),
     fetchNotes() {
       this.fetchDeathNotes(this.page);
+    },
+    handleDonateModalEvents(value) {
+      this.modalDonateActive = value;
+    },
+    handleDonationEvents(address) {
+      this.addressToDonate = address;
+      this.modalDonateActive = true;
     }
   },
   computed: {

@@ -14,6 +14,9 @@ import VeeValidate from "vee-validate";
 Vue.use(VeeValidate);
 /* ================== */
 
+import VueSkeletonLoading from "vue-skeleton-loading";
+Vue.use(VueSkeletonLoading);
+
 Vue.config.productionTip = false;
 
 new Vue({

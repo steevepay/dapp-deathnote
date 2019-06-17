@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 Vue.use(Vuex);
-
+import * as toasters from "@/store/modules/toaster";
 import * as web3 from "@/services/web3";
 import * as dns from "@/services/dns";
 // HELPERS
@@ -12,6 +12,10 @@ import {
 } from "@/store/helpers/deathhelper";
 
 export default new Vuex.Store({
+  strict: true,
+  modules: {
+    toasters
+  },
   state: {
     // Max of notes per pages.
     maxPerPages: 16,
@@ -119,11 +123,15 @@ export default new Vuex.Store({
       if (["latest", "oldest"].includes(filter)) {
         commit("SET_FILTER", filter);
       }
+    },
+    // eslint-disable-next-line no-unused-vars
+    async donateToWriter({ commit }, { from, to, value }) {
+      return web3.donate(from, to, value);
     }
   },
   getters: {
     walletLinked: () => {
-      return !!web3.getWeb3Instance();
+      return !!web3.getWeb3Instance() && web3.getProvider() !== "infura";
     },
     isLoading: state => {
       return !!state.loadingStack.length;

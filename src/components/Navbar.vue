@@ -81,7 +81,7 @@
                 <b-icon icon="plus"></b-icon>
               </b-button>
             </b-tooltip>
-            <b-button
+            <!-- <b-button
               v-show="walletLinked"
               class="button is-light"
               icon-left="skull"
@@ -89,7 +89,7 @@
               tag="router-link"
             >
               My Notes
-            </b-button>
+            </b-button> -->
             <b-button
               type="is-primary"
               @click="$emit('toggle-rules-modal', true)"
