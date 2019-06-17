@@ -1,14 +1,11 @@
 FROM node:lts-jessie
 
-# install simple http server for serving static content
-RUN npm install -g truffle
 # make the 'app' folder the current working directory
 WORKDIR /app
 
 # copy both 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./
 
-RUN truffle compile
 # install project dependencies
 RUN npm install
 
