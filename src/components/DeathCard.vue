@@ -12,11 +12,26 @@
         </b-button>
 
         <b-dropdown-item
+          v-show="walletLinked"
           aria-role="listitem"
           @click="$emit('donate', death.owner)"
           >Donate to the writer</b-dropdown-item
         >
-        <b-dropdown-item aria-role="listitem">Share on Twitter</b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" has-link>
+          <a
+            :href="
+              `https://twitter.com/intent/tweet?text=${death.name} ${
+                death.conditions
+              } at ${dateDeath} from DDeathNote - Kira.`
+            "
+            target="_blank"
+          >
+            <b-icon size="is-small" icon="twitter"></b-icon>
+            <span>
+              Share on Twitter
+            </span>
+          </a>
+        </b-dropdown-item>
       </b-dropdown>
       <div class="media" style="margin-bottom:15px">
         <div class="media-left">
@@ -53,6 +68,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     death: {
@@ -61,6 +78,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(["walletLinked"]),
     dateDeath() {
       return new Date(this.death.timeOfDeath).toLocaleString();
     }

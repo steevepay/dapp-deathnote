@@ -52,8 +52,9 @@ export default new Vuex.Store({
       state.loadingStack.pop();
     },
     SET_NUMBER_NOTES_FETCHING(state, nbr) {
-      state.nbrNotesFetching = nbr;
-      console.log(state.nbrNotesFetching);
+      if (nbr !== undefined && nbr !== null && nbr >= 0) {
+        state.nbrNotesFetching = nbr;
+      }
     }
   },
   actions: {
@@ -109,9 +110,8 @@ export default new Vuex.Store({
           }
         }
       }
-      if (state.nbrNotesFetching === 1) {
-        commit("SET_NUMBER_NOTES_FETCHING", 0);
-      }
+
+      commit("SET_NUMBER_NOTES_FETCHING", 0);
       commit("LOADING_END");
     },
 

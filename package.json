@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "start": "./node_modules/spa-http-server/bin/http-server dist --push-state",
     "test:unit": "vue-cli-service test:unit",
     "test:truffle": "Truffle test ./tests/contracts/*"
   },
@@ -19,7 +20,8 @@
     "vue-router": "^3.0.3",
     "vue-skeleton-loading": "^1.0.2",
     "vuex": "^3.0.1",
-    "web3": "^1.0.0-beta.37"
+    "web3": "^1.0.0-beta.37",
+    "spa-http-server": "^0.9.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
