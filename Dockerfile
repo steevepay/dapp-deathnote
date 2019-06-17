@@ -16,5 +16,3 @@ COPY . .
 RUN npm run build
 
 ENV HOST 0.0.0.0
-# EXPOSE 8080
-# CMD [ "http-server", "dist", "--push-state", "-a 0.0.0.0", "-p 8080" ]
