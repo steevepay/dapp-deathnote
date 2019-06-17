@@ -6,7 +6,7 @@ services:
     container_name: dapp-death-note
     restart: always
     ports:
-      - "3006:8080"
+      - "3007:8080"
     command: "npm run start"
     environment:
       - VIRTUAL_HOST=dapp.com
