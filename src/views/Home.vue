@@ -14,11 +14,18 @@
         v-for="(death, $index) in deaths"
         :key="$index"
       >
+        <!-- v-if="!isLoading" -->
         <DeathCard
           :death="death"
           class="has-text-left"
           @donate="handleDonationEvents"
         />
+      </div>
+      <div
+        v-for="(i, $index) in nbrNotesFetching"
+        :key="'id-' + $index"
+        class="column is-6-tablet is-4-desktop is-3-widescreen is-3-fullhd"
+      >
         <SkeletonCard />
       </div>
     </div>
@@ -37,7 +44,7 @@
 
 <script>
 // VUEX STORE
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 // COMPONENTS
 import DeathCard from "@/components/DeathCard.vue";
 import SkeletonCard from "@/components/SkeletonCard.vue";
@@ -80,7 +87,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(["deaths", "filter"])
+    ...mapState(["deaths", "filter", "nbrNotesFetching"]),
+    ...mapGetters(["isLoading"])
   },
   async mounted() {
     await this.fetchNotes();

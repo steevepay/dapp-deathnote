@@ -26,7 +26,8 @@ export default new Vuex.Store({
     // filter - [latest, oldest]
     filter: "latest",
     // loading on fetching
-    loadingStack: []
+    loadingStack: [],
+    nbrNotesFetching: 0
   },
   mutations: {
     EMPTY_DEATHS_ARRAY(state) {
@@ -49,6 +50,10 @@ export default new Vuex.Store({
     },
     LOADING_END(state) {
       state.loadingStack.pop();
+    },
+    SET_NUMBER_NOTES_FETCHING(state, nbr) {
+      state.nbrNotesFetching = nbr;
+      console.log(state.nbrNotesFetching);
     }
   },
   actions: {
@@ -80,11 +85,13 @@ export default new Vuex.Store({
         }
 
         if (begin < end) {
+          commit("SET_NUMBER_NOTES_FETCHING", end - begin);
           commit("EMPTY_DEATHS_ARRAY");
           for (let id = begin; id < end; id++) {
             death = await dns.getDeath(id);
             if (checkDeathObjectValid(death)) {
               commit("ADD_DEATH_BOTTOM", death);
+              commit("SET_NUMBER_NOTES_FETCHING", state.nbrNotesFetching - 1);
             }
           }
         }
@@ -92,14 +99,18 @@ export default new Vuex.Store({
         begin = state.numberOfDeaths - 1 - (page - 1) * state.maxPerPages;
         if (begin - state.maxPerPages > -1) end = begin - state.maxPerPages;
         else end = -1;
-
+        commit("SET_NUMBER_NOTES_FETCHING", begin - end);
         commit("EMPTY_DEATHS_ARRAY");
         for (let id = begin; id > end; id--) {
           death = await dns.getDeath(id);
           if (checkDeathObjectValid(death)) {
             commit("ADD_DEATH_BOTTOM", death);
+            commit("SET_NUMBER_NOTES_FETCHING", state.nbrNotesFetching - 1);
           }
         }
+      }
+      if (state.nbrNotesFetching === 1) {
+        commit("SET_NUMBER_NOTES_FETCHING", 0);
       }
       commit("LOADING_END");
     },
