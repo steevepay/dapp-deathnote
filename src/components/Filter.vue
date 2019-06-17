@@ -6,6 +6,7 @@
         native-value="latest"
         type="is-dark"
         @input="triggered"
+        :disabled="isLoading && filter === 'oldest'"
       >
         <b-icon icon="new-box" style="color:red;"></b-icon>
         <span>Latest</span>
@@ -15,6 +16,7 @@
         native-value="oldest"
         type="is-dark"
         @input="triggered"
+        :disabled="isLoading && filter === 'latest'"
       >
         <span>Oldest</span>
       </b-radio-button>
@@ -23,7 +25,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -31,7 +33,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(["filter"])
+    ...mapState(["filter"]),
+    ...mapGetters(["isLoading"])
   },
   methods: {
     ...mapActions(["changeFilter", "fetchDeathNotes"]),
