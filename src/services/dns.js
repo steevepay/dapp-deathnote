@@ -9,7 +9,6 @@ export const getDeath = async _id => {
     death = await deathnote.methods.getDeath(_id).call();
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
   return death;
 };
@@ -20,7 +19,6 @@ export const getDeathsLength = async () => {
     length = await deathnote.methods.getDeathsLength().call();
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
   return length;
 };
@@ -31,7 +29,6 @@ export const getDeathFee = async () => {
     fee = await deathnote.methods.getDeathFee().call();
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
   return web3.fromWei(fee, "ether");
 };
@@ -45,7 +42,6 @@ export const setDeathFee = async _fee => {
     });
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
   return fee;
 };
@@ -55,7 +51,7 @@ export const getDeathsOwner = async _id => {
   try {
     address = await deathnote.methods.deathsOwner(_id).call();
   } catch (err) {
-    console.log(err);
+    store.dispatch("toasters/snackBarError", err);
   }
   return address;
 };
@@ -66,7 +62,6 @@ export const getDeathsCounterOwner = async _address => {
     length = await deathnote.methods.deathsCounterOwner(_address).call();
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
   return length;
 };
@@ -89,7 +84,6 @@ export const addDeath = async (_name, _conditions, _date, _img, _value) => {
       });
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
 };
 
@@ -99,7 +93,6 @@ export const getContractBalance = async () => {
     balance = await deathnote.methods.getBalance().call();
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
   return web3.fromWei(balance, "ether");
 };
