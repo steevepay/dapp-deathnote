@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import store from "@/store/store";
 
 let web3;
 let provider;
@@ -7,9 +8,9 @@ const enableMetaMaskEthereum = async () => {
   try {
     // Request account access
     await window.ethereum.enable();
-  } catch (error) {
+  } catch (err) {
     // User denied account access...
-    console.error("User denied account access");
+    store.dispatch("toasters/snackBarError", err);
   }
 };
 
@@ -17,9 +18,9 @@ const enableMetaMaskWeb3 = async () => {
   try {
     // Request account access
     await window.web3.currentProvider.enable();
-  } catch (error) {
+  } catch (err) {
     // User denied account access...
-    console.error("User denied account access");
+    store.dispatch("toasters/snackBarError", err);
   }
 };
 
