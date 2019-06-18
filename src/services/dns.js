@@ -68,8 +68,9 @@ export const getDeathsCounterOwner = async _address => {
 
 export const addDeath = async (_name, _conditions, _date, _img, _value) => {
   const account = await web3.getAccount();
+  let resp;
   try {
-    await deathnote.methods
+    resp = await deathnote.methods
       .addDeath(_name, _conditions, _date, _img)
       .send({
         from: account,
@@ -85,6 +86,7 @@ export const addDeath = async (_name, _conditions, _date, _img, _value) => {
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
   }
+  return resp;
 };
 
 export const getContractBalance = async () => {
