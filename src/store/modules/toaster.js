@@ -50,7 +50,6 @@ export const actions = {
       params["onAction"] = onAction ? onAction : null;
       params["actionText"] = actionText ? actionText : null;
     }
-    console.log(params);
     Snackbar.open(params);
   }
 };

@@ -1,5 +1,6 @@
 import web3 from "./web3";
 import DeathNote from "@/../build/contracts/Deathnote.json";
+// eslint-disable-next-line no-unused-vars
 import store from "@/store/store";
 
 const dnc = new web3.eth.Contract(
@@ -23,21 +24,20 @@ if (
       },
       // eslint-disable-next-line no-unused-vars
       (error, event) => {
-        console.log(event);
+        if (event && event.hasOwnProperty("returnValues")) {
+          store.dispatch("addNewDeath", event.returnValues);
+          console.log(event); // same results as the optional callback above
+        }
       }
     )
     // eslint-disable-next-line no-unused-vars
     .on("data", event => {
-      console.log(event);
-      if (event && event.hasOwnProperty("returnValues")) {
-        store.dispatch("addNewDeath", event.returnValues);
-        console.log(event); // same results as the optional callback above
-      }
+      // console.log(event);
     })
     // eslint-disable-next-line no-unused-vars
     .on("changed", event => {
       // remove event from local database
-      console.log(event);
+      // console.log(event);
     })
     .on("error", console.error);
 }

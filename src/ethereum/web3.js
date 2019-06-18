@@ -1,5 +1,5 @@
 import Web3 from "web3";
-import store from "@/store/store";
+// import store from "@/store/store";
 
 let web3;
 let provider;
@@ -9,8 +9,9 @@ const enableMetaMaskEthereum = async () => {
     // Request account access
     await window.ethereum.enable();
   } catch (err) {
+    console.log(err);
     // User denied account access...
-    store.dispatch("toasters/snackBarError", err);
+    // store.dispatch("toasters/snackBarError", err);
   }
 };
 
@@ -20,7 +21,8 @@ const enableMetaMaskWeb3 = async () => {
     await window.web3.currentProvider.enable();
   } catch (err) {
     // User denied account access...
-    store.dispatch("toasters/snackBarError", err);
+    console.log(err);
+    // store.dispatch("toasters/snackBarError", err);
   }
 };
 
