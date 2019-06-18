@@ -38,16 +38,20 @@ export const actions = {
     // eslint-disable-next-line no-unused-vars
     { commit },
     // eslint-disable-next-line no-unused-vars
-    { message, type, position, duration, actionText, callback }
+    { message, type, position, duration, actionText, indefinite, onAction }
   ) {
-    Snackbar.open({
-      duration: duration ? duration : 3000,
-      message: message ? message : "Oops something went wrong...",
-      type: type ? type : "is-info",
-      position: position ? position : "is-bottom-right",
-      actionText: actionText ? actionText : null,
-      onAction: callback ? callback : null
-    });
+    let params = {};
+    params["indefinite"] = indefinite ? indefinite : false;
+    params["duration"] = duration ? duration : 3000;
+    params["type"] = type ? type : "is-info";
+    params["message"] = message ? message : "Oops something went wrong...";
+    params["position"] = position ? position : "is-bottom-right";
+    if (actionText && onAction) {
+      params["onAction"] = onAction ? onAction : null;
+      params["actionText"] = actionText ? actionText : null;
+    }
+    console.log(params);
+    Snackbar.open(params);
   }
 };
 

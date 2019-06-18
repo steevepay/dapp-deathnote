@@ -8,9 +8,10 @@ const dnc = new web3.eth.Contract(
 );
 
 if (
-  web3.currentProvider.host &&
+  !web3.currentProvider.host ||
   web3.currentProvider.host.indexOf("infura") === -1
 ) {
+  console.log("register the event");
   dnc.events
     .NewDeath(
       {
@@ -22,11 +23,12 @@ if (
       },
       // eslint-disable-next-line no-unused-vars
       (error, event) => {
-        // console.log(event);
+        console.log(event);
       }
     )
     // eslint-disable-next-line no-unused-vars
     .on("data", event => {
+      console.log(event);
       if (event && event.hasOwnProperty("returnValues")) {
         store.dispatch("addNewDeath", event.returnValues);
         console.log(event); // same results as the optional callback above
@@ -35,7 +37,7 @@ if (
     // eslint-disable-next-line no-unused-vars
     .on("changed", event => {
       // remove event from local database
-      // console.log(event);
+      console.log(event);
     })
     .on("error", console.error);
 }

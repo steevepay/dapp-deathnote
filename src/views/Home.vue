@@ -94,12 +94,10 @@ export default {
     await this.fetchNotes();
   },
   watch: {
-    // eslint-disable-next-line no-unused-vars
-    page(n, o) {
+    page() {
       this.fetchNotes();
     },
-    // eslint-disable-next-line no-unused-vars
-    filter(n, o) {
+    filter() {
       this.fetchNotes();
     }
   }

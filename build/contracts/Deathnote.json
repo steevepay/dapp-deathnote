@@ -6179,10 +6179,67 @@
   },
   "networks": {
     "4": {
-      "events": {},
+      "events": {
+        "0x4e201e6faa96fe6dd2aea53cd05e6657452512c491362d8db6540862c1181af4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "conditions",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "timeOfDeath",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "name": "img",
+              "type": "string"
+            }
+          ],
+          "name": "NewDeath",
+          "type": "event",
+          "signature": "0x4e201e6faa96fe6dd2aea53cd05e6657452512c491362d8db6540862c1181af4"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        }
+      },
       "links": {},
-      "address": "0xe7c22c55175B4b2537bEF7C9348314b5e425DC75",
-      "transactionHash": "0x4b5c9a7c833207ad7eaf57bf03b1167d257da6a587b7a144df5f705001bfcc44"
+      "address": "0x99e032a1e9Ca7106f4F7FDA115e312b851C117E3",
+      "transactionHash": "0x1421ecd996ddb2ee13aae37d3243990a4b46b0d59f2c4cdf063a07d7e51684e7"
     },
     "5777": {
       "events": {
@@ -6249,7 +6306,7 @@
     }
   },
   "schemaVersion": "3.0.10",
-  "updatedAt": "2019-06-17T07:45:53.449Z",
+  "updatedAt": "2019-06-18T10:22:53.425Z",
   "devdoc": {
     "methods": {
       "isOwner()": {

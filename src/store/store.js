@@ -67,10 +67,10 @@ export default new Vuex.Store({
     },
     async fetchDeathNotes({ commit, state, dispatch }, page) {
       let death;
-
       commit("LOADING_START");
       await dispatch("fetchNumberOfDeathNotes");
       if (checkPageNumber(page, state.numberOfDeaths, state.maxPerPages)) {
+        commit("LOADING_END");
         return;
       }
 
@@ -102,11 +102,13 @@ export default new Vuex.Store({
         else end = -1;
         commit("SET_NUMBER_NOTES_FETCHING", begin - end);
         commit("EMPTY_DEATHS_ARRAY");
-        for (let id = begin; id > end; id--) {
-          death = await dns.getDeath(id);
-          if (checkDeathObjectValid(death)) {
-            commit("ADD_DEATH_BOTTOM", death);
-            commit("SET_NUMBER_NOTES_FETCHING", state.nbrNotesFetching - 1);
+        if (begin > end) {
+          for (let id = begin; id > end; id--) {
+            death = await dns.getDeath(id);
+            if (checkDeathObjectValid(death)) {
+              commit("ADD_DEATH_BOTTOM", death);
+              commit("SET_NUMBER_NOTES_FETCHING", state.nbrNotesFetching - 1);
+            }
           }
         }
       }

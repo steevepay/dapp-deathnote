@@ -167,6 +167,7 @@ export default {
   },
   methods: {
     ...mapActions(["submitNewDeath"]),
+    ...mapActions("toasters", ["customSnackBar"]),
     closeModal() {
       this.$emit("toggle-write-modal", false);
     },
@@ -197,6 +198,12 @@ export default {
         date.setHours(now.getHours());
         date.setMinutes(now.getMinutes());
       }
+
+      this.customSnackBar({
+        message: "The transaction is pending...",
+        indefinite: true,
+        actionText: "OK"
+      });
       await this.submitNewDeath({
         name: this.model.name,
         conditions: this.isBlank(this.model.conditions)
