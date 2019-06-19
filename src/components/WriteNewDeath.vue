@@ -129,7 +129,10 @@
               Send
             </a>
           </footer>
-          <b-loading :is-full-page="false" :active="isLoading"></b-loading>
+          <b-loading
+            :is-full-page="false"
+            :active="loadingNewDeath"
+          ></b-loading>
         </div>
       </form>
     </b-modal>
@@ -137,7 +140,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   props: {
     isActive: {
@@ -156,11 +159,11 @@ export default {
         value: null
       },
       minDate: null,
-      minTime: null,
-      isLoading: false
+      minTime: null
     };
   },
   computed: {
+    ...mapState(["loadingNewDeath"]),
     formCompleted() {
       return this.model.name && this.model.value;
     }
@@ -179,7 +182,6 @@ export default {
       });
     },
     async submitForm() {
-      this.isLoading = true;
       let now = new Date();
       let date = this.model.date
         ? new Date(
@@ -198,12 +200,11 @@ export default {
         date.setHours(now.getHours());
         date.setMinutes(now.getMinutes());
       }
-
       this.customSnackBar({
         message: "The transaction is pending...",
-        indefinite: true,
-        actionText: "OK"
+        duration: 12000
       });
+      this.closeModal();
       await this.submitNewDeath({
         name: this.model.name,
         conditions: this.isBlank(this.model.conditions)
@@ -213,8 +214,6 @@ export default {
         img: "",
         value: this.model.value
       });
-      this.isLoading = false;
-      this.closeModal();
     },
     isBlank(str) {
       return !str || /^\s*$/.test(str) || str.replace(/\s/g, "") === "";

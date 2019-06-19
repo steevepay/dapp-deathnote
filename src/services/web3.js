@@ -34,28 +34,44 @@ export const getWeb3Instance = () => {
   return web3;
 };
 
-export const donate = async (from, to, value) => {
+export const donate = async (to, value) => {
+  store.dispatch("setLoading", {
+    type: "donation",
+    value: true
+  });
   let resp;
+  let account = await getAccount();
   try {
-    resp = await web3.eth.sendTransaction(
-      {
-        from: from,
-        to: to,
-        value: web3.utils.toWei(value, "ether")
-      },
-      // eslint-disable-next-line no-unused-vars
-      (err, transactionHash) => {
-        if (!err) {
-          store.dispatch("toasters/toastSuccess", {
-            message: "🎉 Transaction success 🎉"
-          });
-        } else {
-          store.dispatch("toasters/snackBarError", err);
+    resp = await web3.eth
+      .sendTransaction(
+        {
+          from: account,
+          to: to,
+          value: web3.utils.toWei(value, "ether")
+        },
+        // eslint-disable-next-line no-unused-vars
+        (err, transactionHash) => {
+          if (err) {
+            store.dispatch("toasters/snackBarError", err);
+          }
         }
-      }
-    );
+      )
+      .then(() => {
+        store.dispatch("toasters/toastSuccess", {
+          message: "Transaction success 🎉",
+          duration: 4000
+        });
+        store.dispatch("setLoading", {
+          type: "donation",
+          value: false
+        });
+      });
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
+    store.dispatch("setLoading", {
+      type: "donation",
+      value: false
+    });
   }
   return resp;
 };

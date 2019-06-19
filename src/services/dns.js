@@ -67,6 +67,10 @@ export const getDeathsCounterOwner = async _address => {
 };
 
 export const addDeath = async (_name, _conditions, _date, _img, _value) => {
+  store.dispatch("setLoading", {
+    type: "newDeath",
+    value: true
+  });
   const account = await web3.getAccount();
   let resp;
   try {
@@ -78,13 +82,21 @@ export const addDeath = async (_name, _conditions, _date, _img, _value) => {
       })
       // eslint-disable-next-line no-unused-vars
       .on("receipt", receipt => {
+        store.dispatch("setLoading", {
+          type: "newDeath",
+          value: false
+        });
         store.dispatch("toasters/toastSuccess", {
-          message: "The note has been written on the blockchain!",
+          message: "The note has been written inside the Blockchain!",
           duration: 6000
         });
       });
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
+    store.dispatch("setLoading", {
+      type: "newDeath",
+      value: false
+    });
   }
   return resp;
 };

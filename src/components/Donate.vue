@@ -42,7 +42,6 @@
                   id="value"
                   name="value"
                   v-validate="'required|notZero'"
-                  placeholder="0.001"
                   icon="currency-eth"
                   v-model.lazy="value"
                 >
@@ -65,7 +64,10 @@
               Send
             </a>
           </footer>
-          <b-loading :is-full-page="false" :active="isLoading"></b-loading>
+          <b-loading
+            :is-full-page="false"
+            :active="loadingDonation"
+          ></b-loading>
         </div>
       </form>
     </b-modal>
@@ -74,7 +76,7 @@
 
 <script>
 // VUEX
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 // UTILITY
 import * as web3 from "@/services/web3";
 
@@ -91,18 +93,18 @@ export default {
   data() {
     return {
       modalActive: false,
-      value: null,
-      isLoading: false
+      value: null
     };
   },
   computed: {
+    ...mapState(["loadingDonation"]),
     formCompleted() {
       return this.addressToDonate && this.value;
     }
   },
   methods: {
     ...mapActions(["donateToWriter"]),
-    ...mapActions("toasters", ["toastSuccess"]),
+    ...mapActions("toasters", ["customSnackBar"]),
     closeModal() {
       this.$emit("toggle-donate-modal", false);
     },
@@ -114,15 +116,15 @@ export default {
       });
     },
     async submitForm() {
-      this.isLoading = true;
-      let account = await web3.getAccount();
+      this.closeModal();
+      this.customSnackBar({
+        message: "The donation is pending...",
+        duration: 12000
+      });
       await this.donateToWriter({
-        from: account,
         to: this.addressToDonate,
         value: this.value
       });
-      this.isLoading = false;
-      this.closeModal();
     }
   },
   created() {

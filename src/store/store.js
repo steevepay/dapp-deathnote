@@ -25,9 +25,14 @@ export default new Vuex.Store({
     deaths: [],
     // filter - [latest, oldest]
     filter: "latest",
+    // Number of notes fetching => dynamic
+    nbrNotesFetching: 0,
     // loading on fetching
     loadingStack: [],
-    nbrNotesFetching: 0
+    // loading when adding new death
+    loadingNewDeath: false,
+    // loading when new transaction
+    loadingDonation: false
   },
   mutations: {
     EMPTY_DEATHS_ARRAY(state) {
@@ -55,6 +60,12 @@ export default new Vuex.Store({
       if (nbr !== undefined && nbr !== null && nbr >= 0) {
         state.nbrNotesFetching = nbr;
       }
+    },
+    SET_LOADING_NEW_DEATH(state, value) {
+      state.loadingNewDeath = value;
+    },
+    SET_LOADING_NEW_DONATION(state, value) {
+      state.loadingDonation = value;
     }
   },
   actions: {
@@ -138,8 +149,15 @@ export default new Vuex.Store({
       }
     },
     // eslint-disable-next-line no-unused-vars
-    async donateToWriter({ commit }, { from, to, value }) {
-      return web3.donate(from, to, value);
+    async donateToWriter({ commit }, { to, value }) {
+      return await web3.donate(to, value);
+    },
+    setLoading({ commit }, { type, value }) {
+      if (type === "newDeath") {
+        commit("SET_LOADING_NEW_DEATH", value);
+      } else if (type === "donation") {
+        commit("SET_LOADING_NEW_DONATION", value);
+      }
     }
   },
   getters: {
