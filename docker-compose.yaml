@@ -9,8 +9,8 @@ services:
       - "3007:8080"
     command: "npm run start"
     environment:
-      - VIRTUAL_HOST=dapp.com
-      - LETSENCRYPT_HOST=dapp.com
+      - VIRTUAL_HOST=deathnote.steevep.com
+      - LETSENCRYPT_HOST=deathnote.steevep.com
       - LETSENCRYPT_EMAIL=steeve.payraudeau@gmail.com
     networks:
       - default
