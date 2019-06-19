@@ -87,7 +87,7 @@ export const addDeath = async (_name, _conditions, _date, _img, _value) => {
           value: false
         });
         store.dispatch("toasters/toastSuccess", {
-          message: "The note has been written inside the Blockchain!",
+          message: "The note has been written on the Blockchain!",
           duration: 6000
         });
       });
