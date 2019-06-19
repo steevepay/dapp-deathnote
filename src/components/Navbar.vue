@@ -3,7 +3,6 @@
     class="navbar is-fixed-top is-dark"
     role="navigation"
     aria-label="main navigation"
-    style="margin-bottom: 12px;"
   >
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">

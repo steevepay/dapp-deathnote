@@ -17,7 +17,6 @@
         <DeathCard
           v-show="$index < maxPerPages"
           :death="death"
-          class="has-text-left"
           @donate="handleDonationEvents"
         />
       </div>

@@ -14,8 +14,15 @@ import VeeValidate from "vee-validate";
 Vue.use(VeeValidate);
 /* ================== */
 
+/* _____ SKELETON ______ */
 import VueSkeletonLoading from "vue-skeleton-loading";
 Vue.use(VueSkeletonLoading);
+/* ================== */
+
+/* _____ CLIPBOARD ______ */
+import Clipboard from "v-clipboard";
+Vue.use(Clipboard);
+/* ================== */
 
 Vue.config.productionTip = false;
 

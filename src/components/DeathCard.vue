@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card has-text-left">
     <div class="card-content">
       <b-dropdown
         aria-role="list"
@@ -15,16 +15,18 @@
           v-show="walletLinked"
           aria-role="listitem"
           @click="$emit('donate', death.owner)"
-          >Donate to the writer</b-dropdown-item
         >
+          <b-icon size="is-small" icon="currency-eth"></b-icon>
+          <span style="padding-left: 3px;">Donate to the writer</span>
+        </b-dropdown-item>
         <b-dropdown-item aria-role="listitem" has-link>
           <a
             :href="
-              `https://twitter.com/intent/tweet?url=https://deathnote.steevep.com&text=${
-                death.name
-              } ${
+              `https://twitter.com/intent/tweet?url=https://deathnote.steevep.com/note/${
+                death.idnote
+              }&text=${death.name} ${
                 death.conditions
-              } on ${dateDeathTwitter} from the Death Note.&hashtags=dappdeathnote,ETH,`
+              } on ${dateDeathTwitter} from the Death Note.&hashtags=deathnotedapp,ETH,blockchain`
             "
             target="_blank"
           >
@@ -33,6 +35,15 @@
               Share on Twitter
             </span>
           </a>
+        </b-dropdown-item>
+        <b-dropdown-item
+          aria-role="listitem"
+          v-clipboard="
+            () => `https://deathnote.steevep.com/note/${death.idnote}`
+          "
+        >
+          <b-icon size="is-small" icon="content-copy"></b-icon>
+          <span style="padding-left: 3px;">Copy link to the note</span>
         </b-dropdown-item>
       </b-dropdown>
       <div class="media" style="margin-bottom:15px">
@@ -80,6 +91,7 @@ export default {
       required: true
     }
   },
+  methods: {},
   computed: {
     ...mapGetters(["walletLinked"]),
     dateDeath() {

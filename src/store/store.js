@@ -100,7 +100,8 @@ export default new Vuex.Store({
           commit("SET_NUMBER_NOTES_FETCHING", end - begin);
           commit("EMPTY_DEATHS_ARRAY");
           for (let id = begin; id < end; id++) {
-            death = await dns.getDeath(id);
+            // death = await dns.getDeath(id);
+            death = await dispatch("fetchNote", id);
             if (checkDeathObjectValid(death)) {
               commit("ADD_DEATH_BOTTOM", death);
               commit("SET_NUMBER_NOTES_FETCHING", state.nbrNotesFetching - 1);
@@ -115,7 +116,8 @@ export default new Vuex.Store({
         commit("EMPTY_DEATHS_ARRAY");
         if (begin > end) {
           for (let id = begin; id > end; id--) {
-            death = await dns.getDeath(id);
+            // death = await dns.getDeath(id);
+            death = await dispatch("fetchNote", id);
             if (checkDeathObjectValid(death)) {
               commit("ADD_DEATH_BOTTOM", death);
               commit("SET_NUMBER_NOTES_FETCHING", state.nbrNotesFetching - 1);
@@ -127,7 +129,14 @@ export default new Vuex.Store({
       commit("SET_NUMBER_NOTES_FETCHING", 0);
       commit("LOADING_END");
     },
-
+    // eslint-disable-next-line no-unused-vars
+    async fetchNote({ commit }, id) {
+      let resp = await dns.getDeath(id);
+      if (resp) {
+        resp["idnote"] = id;
+      }
+      return resp;
+    },
     // eslint-disable-next-line no-unused-vars
     async submitNewDeath({ commit }, { name, conditions, date, img, value }) {
       return await dns.addDeath(name, conditions, date, img, value);
