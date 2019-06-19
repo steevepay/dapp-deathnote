@@ -41,6 +41,7 @@
           v-clipboard="
             () => `https://deathnote.steevep.com/note/${death.idnote}`
           "
+          v-clipboard:success="handleEventCopyClipboard"
         >
           <b-icon size="is-small" icon="content-copy"></b-icon>
           <span style="padding-left: 3px;">Copy link to the note</span>
@@ -91,7 +92,11 @@ export default {
       required: true
     }
   },
-  methods: {},
+  methods: {
+    handleEventCopyClipboard() {
+      this.$toast.open("Copied to clipboard!");
+    }
+  },
   computed: {
     ...mapGetters(["walletLinked"]),
     dateDeath() {
