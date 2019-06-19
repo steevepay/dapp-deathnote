@@ -12,34 +12,37 @@ if (
   !web3.currentProvider.host ||
   web3.currentProvider.host.indexOf("infura") === -1
 ) {
-  console.log("register the event");
-  dnc.events
-    .NewDeath(
-      {
-        // filter: {
-        //   myIndexedParam: [20, 23],
-        //   myOtherIndexedParam: "0x123456789..."
-        // }, // Using an array means OR: e.g. 20 or 23
-        // fromBlock: 0
-      },
-      // eslint-disable-next-line no-unused-vars
-      (error, event) => {
-        if (event && event.hasOwnProperty("returnValues")) {
-          store.dispatch("addNewDeath", event.returnValues);
-          console.log(event); // same results as the optional callback above
+  try {
+    dnc.events
+      .NewDeath(
+        {
+          // filter: {
+          //   myIndexedParam: [20, 23],
+          //   myOtherIndexedParam: "0x123456789..."
+          // }, // Using an array means OR: e.g. 20 or 23
+          // fromBlock: 0
+        },
+        // eslint-disable-next-line no-unused-vars
+        (error, event) => {
+          if (event && event.hasOwnProperty("returnValues")) {
+            store.dispatch("addNewDeath", event.returnValues);
+            // same results as the optional callback above
+          }
         }
-      }
-    )
-    // eslint-disable-next-line no-unused-vars
-    .on("data", event => {
-      // console.log(event);
-    })
-    // eslint-disable-next-line no-unused-vars
-    .on("changed", event => {
-      // remove event from local database
-      // console.log(event);
-    })
-    .on("error", console.error);
+      )
+      // eslint-disable-next-line no-unused-vars
+      .on("data", event => {
+        // console.log(event);
+      })
+      // eslint-disable-next-line no-unused-vars
+      .on("changed", event => {
+        // remove event from local database
+        // console.log(event);
+      })
+      .on("error", console.error);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 export default dnc;

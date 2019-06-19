@@ -14,8 +14,8 @@
         v-for="(death, $index) in deaths"
         :key="$index"
       >
-        <!-- v-if="!isLoading" -->
         <DeathCard
+          v-show="$index < maxPerPages"
           :death="death"
           class="has-text-left"
           @donate="handleDonationEvents"
@@ -87,7 +87,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["deaths", "filter", "nbrNotesFetching"]),
+    ...mapState(["deaths", "filter", "nbrNotesFetching", "maxPerPages"]),
     ...mapGetters(["isLoading"])
   },
   async mounted() {

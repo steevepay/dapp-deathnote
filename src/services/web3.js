@@ -8,7 +8,6 @@ export const getAccounts = async () => {
     accounts = await web3.eth.getAccounts();
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
   return accounts;
 };
@@ -19,7 +18,6 @@ export const getAccount = async () => {
     accounts = await web3.eth.getAccounts();
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    console.log(err);
   }
   return accounts[0];
 };
@@ -53,12 +51,11 @@ export const donate = async (from, to, value) => {
           });
         } else {
           store.dispatch("toasters/snackBarError", err);
-          console.log(err);
         }
       }
     );
   } catch (err) {
-    console.log(err);
+    store.dispatch("toasters/snackBarError", err);
   }
   return resp;
 };

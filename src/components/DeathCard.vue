@@ -20,9 +20,11 @@
         <b-dropdown-item aria-role="listitem" has-link>
           <a
             :href="
-              `https://twitter.com/intent/tweet?text=${death.name} ${
+              `https://twitter.com/intent/tweet?url=https://deathnote.steevep.com&text=${
+                death.name
+              } ${
                 death.conditions
-              } at ${dateDeath} from DDeathNote - Kira.`
+              } on ${dateDeathTwitter} from the Death Note.&hashtags=dappdeathnote,ETH,`
             "
             target="_blank"
           >
@@ -69,6 +71,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import dateFormat from "dateformat";
 
 export default {
   props: {
@@ -81,6 +84,13 @@ export default {
     ...mapGetters(["walletLinked"]),
     dateDeath() {
       return new Date(this.death.timeOfDeath).toLocaleString();
+    },
+    dateDeathTwitter() {
+      return (
+        dateFormat(this.death.timeOfDeath, "dddd, mmmm dS, yyyy") +
+        " at " +
+        dateFormat(this.death.timeOfDeath, "h:MM:ss TT")
+      );
     }
   }
 };

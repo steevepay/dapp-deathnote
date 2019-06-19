@@ -9,7 +9,7 @@ const enableMetaMaskEthereum = async () => {
     // Request account access
     await window.ethereum.enable();
   } catch (err) {
-    console.log(err);
+    console.error(err);
     // User denied account access...
     // store.dispatch("toasters/snackBarError", err);
   }
@@ -21,7 +21,7 @@ const enableMetaMaskWeb3 = async () => {
     await window.web3.currentProvider.enable();
   } catch (err) {
     // User denied account access...
-    console.log(err);
+    console.error(err);
     // store.dispatch("toasters/snackBarError", err);
   }
 };
