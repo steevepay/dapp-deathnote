@@ -87,8 +87,14 @@ contract("DeathNote", accounts => {
       assert.equal("test-date" + index, death.timeOfDeath);
       assert.equal("test-img" + index, death.img);
     }
-    const totalDeath = await deathnote2.deathsCounterOwner(accounts[2]);
+    const totalDeath = await deathnote2.getOwnerNotesLength({
+      from: accounts[2]
+    });
     assert.equal(length, totalDeath);
+    let resp = await deathnote2.getOwnerNotes({ from: accounts[2] });
+    assert.equal(length, resp.length);
+    resp = await deathnote2.getOwnerNote(0, { from: accounts[2] });
+    assert.equal(1, resp);
   });
 
   it("different death owned by different persons", async () => {
