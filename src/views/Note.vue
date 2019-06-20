@@ -10,42 +10,25 @@
         </router-link>
       </div>
       <div class="column is-4 is-offset-4">
-        <DeathCard :death="note" v-if="!isLoading" />
-        <SkeletonCard v-else />
+        <DeathCard :idnote="id" />
       </div>
     </div>
   </section>
 </template>
 
 <script>
+// COMPONENTS
 import DeathCard from "@/components/DeathCard.vue";
-import SkeletonCard from "@/components/SkeletonCard.vue";
-import { mapActions } from "vuex";
+
 export default {
   components: {
-    // eslint-disable-next-line vue/no-unused-components
-    DeathCard,
-    SkeletonCard
+    DeathCard
   },
   props: {
     id: {
       type: Number,
       required: true
     }
-  },
-  data() {
-    return {
-      note: {},
-      isLoading: false
-    };
-  },
-  methods: {
-    ...mapActions(["fetchNote"])
-  },
-  async mounted() {
-    this.isLoading = true;
-    this.note = await this.fetchNote("" + this.id);
-    this.isLoading = false;
   }
 };
 </script>

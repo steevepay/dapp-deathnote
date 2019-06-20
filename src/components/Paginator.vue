@@ -1,7 +1,7 @@
 <template>
   <section id="pagination">
     <b-pagination
-      :total="numberOfDeaths"
+      :total="notesLength"
       :current="currentPage"
       :order="order"
       :size="size"
@@ -38,7 +38,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["maxPerPages", "numberOfDeaths"])
+    ...mapState(["maxPerPages", "notesLength"])
   },
   methods: {
     changePage(page) {

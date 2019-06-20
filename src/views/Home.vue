@@ -1,9 +1,6 @@
 <template>
   <section id="home" class="container">
     <div class="columns is-multiline">
-      <!-- <div class="column is-12">
-        <Paginator :current-page="page" />
-      </div> -->
       <div class="column is-12" style="padding-bottom: 0;">
         <OrderComponent />
       </div>
@@ -11,21 +8,14 @@
     <div class="columns is-multiline is-vcentered is-centered is-variable is-2">
       <div
         class="column is-6-tablet is-4-desktop is-3-widescreen is-3-fullhd"
-        v-for="(death, $index) in deaths"
+        v-for="(note, $index) in notes"
         :key="$index"
       >
         <DeathCard
           v-show="$index < maxPerPages"
-          :death="death"
+          :idnote="note"
           @donate="handleDonationEvents"
         />
-      </div>
-      <div
-        v-for="(i, $index) in nbrNotesFetching"
-        :key="'id-' + $index"
-        class="column is-6-tablet is-4-desktop is-3-widescreen is-3-fullhd"
-      >
-        <SkeletonCard />
       </div>
     </div>
     <div class="columns">
@@ -46,7 +36,6 @@
 import { mapActions, mapState } from "vuex";
 // COMPONENTS
 import DeathCard from "@/components/DeathCard.vue";
-import SkeletonCard from "@/components/SkeletonCard.vue";
 import Paginator from "@/components/Paginator.vue";
 import OrderComponent from "@/components/Filter.vue";
 import Donate from "@/components/Donate.vue";
@@ -57,8 +46,7 @@ export default {
     DeathCard,
     Paginator,
     OrderComponent,
-    Donate,
-    SkeletonCard
+    Donate
   },
   props: {
     page: {
@@ -73,9 +61,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["fetchDeathNotes"]),
-    fetchNotes() {
-      this.fetchDeathNotes(this.page);
+    ...mapActions(["fetchNotes"]),
+    fetchData() {
+      this.fetchNotes(this.page);
     },
     handleDonateModalEvents(value) {
       this.modalDonateActive = value;
@@ -86,17 +74,23 @@ export default {
     }
   },
   computed: {
-    ...mapState(["deaths", "filter", "nbrNotesFetching", "maxPerPages"])
+    ...mapState([
+      // "deaths",
+      "filter",
+      "nbrNotesFetching",
+      "maxPerPages",
+      "notes"
+    ])
   },
   async mounted() {
-    await this.fetchNotes();
+    await this.fetchData();
   },
   watch: {
     page() {
-      this.fetchNotes();
+      this.fetchData();
     },
     filter() {
-      this.fetchNotes();
+      this.fetchData();
     }
   }
 };

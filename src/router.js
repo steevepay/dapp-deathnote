@@ -5,6 +5,12 @@ const Home = () => import("./views/Home.vue");
 const Notes = () => import("./views/MyNotes.vue");
 const ErrorPage = () => import("./views/Error.vue");
 const Note = () => import("./views/Note.vue");
+const checkPageNumber = (page, totalDeaths, maxPerPages) => {
+  if (page < 1 || Math.ceil(totalDeaths / maxPerPages) < page) {
+    return true;
+  }
+  return false;
+};
 
 Vue.use(Router);
 
@@ -34,13 +40,13 @@ export default new Router({
         return props;
       },
       beforeEnter: async (to, from, next) => {
-        await store.dispatch("fetchNumberOfDeathNotes").then(totalOfDeath => {
+        await store.dispatch("fetchNotesLength").then(totalOfNotes => {
           if (
             !to.params.hasOwnProperty("id") ||
             !to.params.id ||
             to.params.id === null ||
             to.params.id === undefined ||
-            parseInt(to.params.id) >= totalOfDeath ||
+            parseInt(to.params.id) >= totalOfNotes ||
             parseInt(to.params.id) < 0
           ) {
             next("/error/404");
@@ -63,11 +69,13 @@ export default new Router({
         return props;
       },
       beforeEnter: async (to, from, next) => {
-        await store.dispatch("fetchNumberOfDeathNotes").then(totalOfDeath => {
+        await store.dispatch("fetchNotesLength").then(totalOfNotes => {
           if (
-            parseInt(to.params.page) >
-              Math.ceil(totalOfDeath / store.state.maxPerPages) ||
-            parseInt(to.params.page) < 1
+            checkPageNumber(
+              parseInt(to.params.page),
+              totalOfNotes,
+              store.state.maxPerPages
+            )
           ) {
             next("/error/404");
           }

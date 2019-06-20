@@ -25,8 +25,7 @@ if (
         // eslint-disable-next-line no-unused-vars
         (error, event) => {
           if (event && event.hasOwnProperty("returnValues")) {
-            store.dispatch("addNewDeath", event.returnValues);
-            // same results as the optional callback above
+            store.dispatch("addNewNote", event.returnValues);
           }
         }
       )

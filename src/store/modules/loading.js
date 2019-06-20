@@ -15,9 +15,11 @@ export const state = {
 export const mutations = {
   LOADING_START(state, type) {
     state.loading[type]++;
+    // console.log(state.loading[type]);
   },
   LOADING_END(state, type) {
     state.loading[type]--;
+    // console.log(state.loading[type]);
   }
 };
 

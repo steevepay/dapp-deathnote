@@ -1,5 +1,5 @@
 <template>
-  <div class="card has-text-left">
+  <div class="card has-text-left" v-if="death">
     <div class="card-content">
       <b-dropdown
         aria-role="list"
@@ -23,7 +23,7 @@
           <a
             :href="
               `https://twitter.com/intent/tweet?url=https://deathnote.steevep.com/note/${
-                death.idnote
+                this.idnote
               }&text=${death.name} ${
                 death.conditions
               } on ${dateDeathTwitter} from the Death Note.&hashtags=deathnotedapp,ETH,blockchain`
@@ -39,7 +39,7 @@
         <b-dropdown-item
           aria-role="listitem"
           v-clipboard="
-            () => `https://deathnote.steevep.com/note/${death.idnote}`
+            () => `https://deathnote.steevep.com/note/${this.idnote}`
           "
           v-clipboard:success="handleEventCopyClipboard"
         >
@@ -79,22 +79,36 @@
       </div>
     </div>
   </div>
+  <SkeletonCard v-else />
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import dateFormat from "dateformat";
+import SkeletonCard from "@/components/SkeletonCard.vue";
 
 export default {
+  components: {
+    SkeletonCard
+  },
   props: {
-    death: {
-      type: Object,
+    idnote: {
+      type: Number,
       required: true
     }
   },
+  data() {
+    return {
+      death: undefined
+    };
+  },
   methods: {
+    ...mapActions(["fetchNote"]),
     handleEventCopyClipboard() {
       this.$toast.open("Copied to clipboard!");
+    },
+    async fetchCard() {
+      this.death = await this.fetchNote("" + this.idnote);
     }
   },
   computed: {
@@ -109,16 +123,16 @@ export default {
         dateFormat(this.death.timeOfDeath, "h:MM:ss TT")
       );
     }
+  },
+  created() {
+    this.fetchCard();
+  },
+  watch: {
+    idnote() {
+      this.fetchCard();
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-.btn-more {
-  // padding: 12px;
-}
-
-.btn-more-icon {
-  // margin-top: -7px !important;
-}
-</style>
+<style lang="scss" scoped></style>

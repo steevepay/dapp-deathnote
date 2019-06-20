@@ -37,7 +37,7 @@ export default {
     ...mapGetters("loading", ["isLoading"])
   },
   methods: {
-    ...mapActions(["changeFilter", "fetchDeathNotes"]),
+    ...mapActions(["changeFilter"]),
     triggered(data) {
       this.changeFilter(data);
     }

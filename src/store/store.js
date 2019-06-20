@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import router from "@/router";
 
 Vue.use(Vuex);
 import * as toasters from "@/store/modules/toasters";
@@ -7,10 +8,7 @@ import * as loading from "@/store/modules/loading";
 import * as web3 from "@/services/web3";
 import * as dns from "@/services/dns";
 // HELPERS
-import {
-  checkDeathObjectValid,
-  checkPageNumber
-} from "@/store/helpers/deathhelper";
+import { checkDeathObjectValid, range } from "@/store/helpers/deathhelper";
 
 export default new Vuex.Store({
   strict: true,
@@ -19,121 +17,90 @@ export default new Vuex.Store({
     loading
   },
   state: {
+    // IDS OF THE NOTES
+    notes: [],
     // Max of notes per pages.
     maxPerPages: 16,
     // Number of notes has been written in the contract
-    numberOfDeaths: 0,
-    // Deaths fetched
-    deaths: [],
+    notesLength: 0,
     // filter - [latest, oldest]
-    filter: "latest",
-    // Number of notes fetching => dynamic
-    nbrNotesFetching: 0
+    filter: "latest"
   },
   mutations: {
-    EMPTY_DEATHS_ARRAY(state) {
-      state.deaths = [];
+    SET_NOTES(state, { start, end }) {
+      state.notes = range(start, end);
     },
-    ADD_DEATH_BOTTOM(state, death) {
-      state.deaths.push(death);
+    ADD_NOTE_BOTTOM(state, id) {
+      state.notes.push(id);
     },
-    ADD_DEATH_TOP(state, death) {
-      state.deaths.unshift(death);
+    ADD_NOTE_TOP(state, id) {
+      state.notes.unshift(id);
     },
-    SET_NUMBER_OF_DEATHS(state, nbr) {
-      state.numberOfDeaths = nbr;
+    SET_NUMBER_OF_NOTES(state, nbr) {
+      state.notesLength = nbr;
     },
     SET_FILTER(state, filter) {
       state.filter = filter;
-    },
-    SET_NUMBER_NOTES_FETCHING(state, nbr) {
-      if (nbr !== undefined && nbr !== null && nbr >= 0) {
-        state.nbrNotesFetching = nbr;
-      }
     }
   },
   actions: {
-    async fetchNumberOfDeathNotes({ commit }) {
+    async fetchNotesLength({ commit }) {
       return await dns.getDeathsLength().then(nbr => {
         nbr = parseFloat(nbr);
-        commit("SET_NUMBER_OF_DEATHS", nbr);
+        commit("SET_NUMBER_OF_NOTES", nbr);
         return nbr;
       });
     },
-    async fetchDeathNotes({ commit, state, dispatch }, page) {
-      let death;
-      dispatch("loading/lstart", "main");
-      await dispatch("fetchNumberOfDeathNotes");
-      if (checkPageNumber(page, state.numberOfDeaths, state.maxPerPages)) {
-        dispatch("loading/lend", "main");
-        return;
-      }
-
+    async fetchNotes({ commit, state }, page) {
       let end;
       let begin;
 
       if (state.filter === "oldest") {
         begin = (page - 1) * state.maxPerPages;
-        if (begin + state.maxPerPages > state.numberOfDeaths) {
-          end = state.numberOfDeaths;
+        if (begin + state.maxPerPages > state.notesLength) {
+          end = state.notesLength - 1;
         } else {
           end = begin + state.maxPerPages;
         }
-
-        if (begin < end) {
-          commit("SET_NUMBER_NOTES_FETCHING", end - begin);
-          commit("EMPTY_DEATHS_ARRAY");
-          for (let id = begin; id < end; id++) {
-            // death = await dns.getDeath(id);
-            death = await dispatch("fetchNote", id);
-            if (checkDeathObjectValid(death)) {
-              commit("ADD_DEATH_BOTTOM", death);
-              commit("SET_NUMBER_NOTES_FETCHING", state.nbrNotesFetching - 1);
-            }
-          }
-        }
       } else if (state.filter === "latest") {
-        begin = state.numberOfDeaths - 1 - (page - 1) * state.maxPerPages;
+        begin = state.notesLength - 1 - (page - 1) * state.maxPerPages;
         if (begin - state.maxPerPages > -1) end = begin - state.maxPerPages;
-        else end = -1;
-        commit("SET_NUMBER_NOTES_FETCHING", begin - end);
-        commit("EMPTY_DEATHS_ARRAY");
-        if (begin > end) {
-          for (let id = begin; id > end; id--) {
-            // death = await dns.getDeath(id);
-            death = await dispatch("fetchNote", id);
-            if (checkDeathObjectValid(death)) {
-              commit("ADD_DEATH_BOTTOM", death);
-              commit("SET_NUMBER_NOTES_FETCHING", state.nbrNotesFetching - 1);
-            }
-          }
-        }
+        else end = 0;
       }
-
-      commit("SET_NUMBER_NOTES_FETCHING", 0);
-      dispatch("loading/lend", "main");
+      // console.log(begin, end);
+      commit("SET_NOTES", {
+        start: begin,
+        end: end
+      });
     },
     // eslint-disable-next-line no-unused-vars
-    async fetchNote({ commit }, id) {
+    async fetchNote(context, id) {
+      context.dispatch("loading/lstart", "main");
       let resp = await dns.getDeath(id);
       if (resp) {
         resp["idnote"] = id;
       }
+      context.dispatch("loading/lend", "main");
       return resp;
     },
     // eslint-disable-next-line no-unused-vars
-    async submitNewDeath({ commit }, { name, conditions, date, img, value }) {
+    async submitNewDeath(context, { name, conditions, date, img, value }) {
       return await dns.addDeath(name, conditions, date, img, value);
     },
-    addNewDeath({ commit, state }, death) {
-      death["new"] = true;
-      if (checkDeathObjectValid(death)) {
-        if (state.filter === "latest") {
-          commit("ADD_DEATH_TOP", death);
+    addNewNote({ commit, state }, note) {
+      if (checkDeathObjectValid(note)) {
+        let id = parseInt(note.id) - 1;
+        console.log(router.currentRoute.params);
+        if (
+          state.filter === "latest" &&
+          (router.currentRoute.params.page === undefined ||
+            router.currentRoute.params.page === "1")
+        ) {
+          commit("ADD_NOTE_TOP", id);
         } else if (state.filter === "oldest") {
-          commit("ADD_DEATH_BOTTOM", death);
+          commit("ADD_NOTE_BOTTOM", id);
         }
-        commit("SET_NUMBER_OF_DEATHS", state.numberOfDeaths + 1);
+        commit("SET_NUMBER_OF_NOTES", state.notesLength + 1);
       }
     },
     changeFilter({ commit }, filter) {
