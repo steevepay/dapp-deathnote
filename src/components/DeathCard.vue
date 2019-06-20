@@ -108,6 +108,7 @@ export default {
       this.$toast.open("Copied to clipboard!");
     },
     async fetchCard() {
+      this.death = undefined;
       this.death = await this.fetchNote("" + this.idnote);
     }
   },
