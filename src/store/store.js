@@ -19,16 +19,26 @@ export default new Vuex.Store({
   state: {
     // IDS OF THE NOTES
     notes: [],
+    // IDS OF THE NOTES
+    newNotes: [],
     // Max of notes per pages.
     maxPerPages: 16,
     // Number of notes has been written in the contract
     notesLength: 0,
     // filter - [latest, oldest]
-    filter: "latest"
+    filter: "latest",
+    // user public key
+    account: null
   },
   mutations: {
     SET_NOTES(state, { start, end }) {
       state.notes = range(start, end);
+    },
+    ADD_NEW_NOTE(state, id) {
+      state.newNotes.push({
+        id: id,
+        date: new Date()
+      });
     },
     ADD_NOTE_BOTTOM(state, id) {
       state.notes.push(id);
@@ -41,10 +51,20 @@ export default new Vuex.Store({
     },
     SET_FILTER(state, filter) {
       state.filter = filter;
+    },
+    SET_ACCOUNT(state, key) {
+      state.account = key;
     }
   },
   actions: {
-    async fetchNotesLength({ commit }) {
+    async fetchAccount({ commit, getters }) {
+      if (getters.walletLinked === true) {
+        let resp = await web3.getAccount();
+        commit("SET_ACCOUNT", resp);
+      }
+    },
+    async fetchNotesLength({ commit, dispatch }) {
+      await dispatch("fetchAccount");
       return await dns.getDeathsLength().then(nbr => {
         nbr = parseFloat(nbr);
         commit("SET_NUMBER_OF_NOTES", nbr);
@@ -90,7 +110,6 @@ export default new Vuex.Store({
     addNewNote({ commit, state }, note) {
       if (checkDeathObjectValid(note)) {
         let id = parseInt(note.id) - 1;
-        console.log(router.currentRoute.params);
         if (
           state.filter === "latest" &&
           (router.currentRoute.params.page === undefined ||
@@ -100,6 +119,7 @@ export default new Vuex.Store({
         } else if (state.filter === "oldest") {
           commit("ADD_NOTE_BOTTOM", id);
         }
+        commit("ADD_NEW_NOTE", id);
         commit("SET_NUMBER_OF_NOTES", state.notesLength + 1);
       }
     },

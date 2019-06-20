@@ -1,6 +1,14 @@
 <template>
   <div class="card has-text-left" v-if="death">
     <div class="card-content">
+      <b-tag
+        class="is-danger"
+        rounded
+        style="position: absolute;top: 3px;left: 3px;"
+        v-if="newNote"
+      >
+        New
+      </b-tag>
       <b-dropdown
         aria-role="list"
         style="position: absolute;right: 19px;bottom: 19px;"
@@ -62,20 +70,14 @@
         <div class="media-content">
           <p class="title is-4" style="margin:0">{{ death.name }}</p>
           <div class="is-6">
-            <span
-              v-if="death.hasOwnProperty('new') && death.new === true"
-              class="tag is-danger"
-            >
-              New
-            </span>
+            <b-tag v-show="death.owner === account">Written by you.</b-tag>
           </div>
         </div>
       </div>
 
       <div class="content">
         <p style="overflow-wrap: break-word;margin:0">{{ death.conditions }}</p>
-        <a>{{ dateDeath }}</a>
-        <!-- <a href="#">#css</a> <a href="#">#responsive</a> -->
+        <a>{{ dateDeath }}</a> <br />
       </div>
     </div>
   </div>
@@ -83,7 +85,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import dateFormat from "dateformat";
 import SkeletonCard from "@/components/SkeletonCard.vue";
 
@@ -113,6 +115,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(["account", "newNotes"]),
     ...mapGetters(["walletLinked"]),
     dateDeath() {
       return new Date(this.death.timeOfDeath).toLocaleString();
@@ -122,6 +125,13 @@ export default {
         dateFormat(this.death.timeOfDeath, "dddd, mmmm dS, yyyy") +
         " at " +
         dateFormat(this.death.timeOfDeath, "h:MM:ss TT")
+      );
+    },
+    newNote() {
+      return (
+        this.newNotes.filter(x => {
+          return x.id === this.idnote;
+        }).length === 1
       );
     }
   },
