@@ -1373,20 +1373,7 @@
     "name": "solc",
     "version": "0.5.8+commit.23d335f2.Linux.g++"
   },
-  "networks": {
-    "4": {
-      "events": {},
-      "links": {},
-      "address": "0xb27a89Da2fc3eAa32ff27b73E2442C928c0B9aa2",
-      "transactionHash": "0x46edbb34f119ecc930ba8341ce55fb2803f8961dc24c3651d8aea2d4dbe15318"
-    },
-    "5777": {
-      "events": {},
-      "links": {},
-      "address": "0xE02cffe142453FFBC4DC5ba5685e5E790a19684F",
-      "transactionHash": "0x265300ae90561802f18563c9d1b460d91a0edb8ff14ccf42e17bd35063c5657f"
-    }
-  },
+  "networks": {},
   "schemaVersion": "3.0.10",
   "updatedAt": "2019-06-19T11:25:52.618Z",
   "devdoc": {
