@@ -131,7 +131,7 @@
           </footer>
           <b-loading
             :is-full-page="false"
-            :active="loadingNewDeath"
+            :active="isLoadingNewDeath"
           ></b-loading>
         </div>
       </form>
@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   props: {
     isActive: {
@@ -163,7 +163,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["loadingNewDeath"]),
+    ...mapGetters("loading", ["isLoadingNewDeath"]),
     formCompleted() {
       return this.model.name && this.model.value;
     }

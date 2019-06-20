@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     ...mapState(["filter"]),
-    ...mapGetters(["isLoading"])
+    ...mapGetters("loading", ["isLoading"])
   },
   methods: {
     ...mapActions(["changeFilter", "fetchDeathNotes"]),

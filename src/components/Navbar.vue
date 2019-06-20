@@ -125,7 +125,8 @@ import { mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["walletLinked", "isLoading"])
+    ...mapGetters(["walletLinked"]),
+    ...mapGetters("loading", ["isLoading"])
   }
 };
 </script>

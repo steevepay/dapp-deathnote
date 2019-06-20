@@ -66,7 +66,7 @@
           </footer>
           <b-loading
             :is-full-page="false"
-            :active="loadingDonation"
+            :active="isLoadingDonation"
           ></b-loading>
         </div>
       </form>
@@ -76,7 +76,7 @@
 
 <script>
 // VUEX
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 // UTILITY
 import * as web3 from "@/services/web3";
 
@@ -97,7 +97,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["loadingDonation"]),
+    ...mapGetters("loading", ["isLoadingDonation"]),
     formCompleted() {
       return this.addressToDonate && this.value;
     }

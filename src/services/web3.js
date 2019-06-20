@@ -35,10 +35,7 @@ export const getWeb3Instance = () => {
 };
 
 export const donate = async (to, value) => {
-  store.dispatch("setLoading", {
-    type: "donation",
-    value: true
-  });
+  store.dispatch("loading/lstart", "donation");
   let resp;
   let account = await getAccount();
   try {
@@ -61,17 +58,11 @@ export const donate = async (to, value) => {
           message: "Transaction success 🎉",
           duration: 4000
         });
-        store.dispatch("setLoading", {
-          type: "donation",
-          value: false
-        });
+        store.dispatch("loading/lend", "donation");
       });
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
-    store.dispatch("setLoading", {
-      type: "donation",
-      value: false
-    });
+    store.dispatch("loading/lend", "donation");
   }
   return resp;
 };

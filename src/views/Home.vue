@@ -43,7 +43,7 @@
 
 <script>
 // VUEX STORE
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapState } from "vuex";
 // COMPONENTS
 import DeathCard from "@/components/DeathCard.vue";
 import SkeletonCard from "@/components/SkeletonCard.vue";
@@ -86,8 +86,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["deaths", "filter", "nbrNotesFetching", "maxPerPages"]),
-    ...mapGetters(["isLoading"])
+    ...mapState(["deaths", "filter", "nbrNotesFetching", "maxPerPages"])
   },
   async mounted() {
     await this.fetchNotes();
