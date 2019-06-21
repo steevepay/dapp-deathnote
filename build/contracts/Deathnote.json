@@ -6988,9 +6988,16 @@
     "name": "solc",
     "version": "0.5.8+commit.23d335f2.Linux.g++"
   },
-  "networks": {},
+  "networks": {
+    "1": {
+      "events": {},
+      "links": {},
+      "address": "0x97C8CF74F49D92cA5aC0eC4301B106eCC3C6737b",
+      "transactionHash": "0x60ad068328896d57e1e4aeb1dd99f1ea1d429c71fc07e433a1e715a44248d55b"
+    }
+  },
   "schemaVersion": "3.0.10",
-  "updatedAt": "2019-06-19T11:25:52.606Z",
+  "updatedAt": "2019-06-20T12:38:05.445Z",
   "devdoc": {
     "methods": {
       "isOwner()": {

@@ -1,6 +1,5 @@
 import web3 from "./web3";
 import DeathNote from "@/../build/contracts/Deathnote.json";
-// eslint-disable-next-line no-unused-vars
 import store from "@/store/store";
 
 const dnc = new web3.eth.Contract(

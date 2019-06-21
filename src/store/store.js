@@ -32,7 +32,10 @@ export default new Vuex.Store({
   },
   mutations: {
     SET_NOTES(state, { start, end }) {
+      // console.log(start, end);
+      // if (start > 0 && end > 0) {
       state.notes = range(start, end);
+      // }
     },
     ADD_NEW_NOTE(state, id) {
       state.newNotes.push({
@@ -87,11 +90,17 @@ export default new Vuex.Store({
         if (begin - state.maxPerPages > -1) end = begin - state.maxPerPages;
         else end = 0;
       }
-      // console.log(begin, end);
+
+      // if (state.notesLength === 0) {
+      //   begin = 0;
+      //   end = 0;
+      // }
+      // console.log(begin, end, state.notesLength);
       commit("SET_NOTES", {
         start: begin,
         end: end
       });
+      // console.log(state.notes);
     },
     // eslint-disable-next-line no-unused-vars
     async fetchNote(context, id) {
