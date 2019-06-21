@@ -73,18 +73,25 @@ export const addDeath = async (_name, _conditions, _date, _img, _value) => {
   try {
     resp = await deathnote.methods
       .addDeath(_name, _conditions, _date, _img)
-      .send({
-        from: account,
-        value: web3.toWei(_value, "ether")
-      })
-      // eslint-disable-next-line no-unused-vars
-      .on("receipt", receipt => {
-        store.dispatch("loading/lend", "newdeath");
-        store.dispatch("toasters/toastSuccess", {
-          message: "The note has been written on the Blockchain!",
-          duration: 6000
-        });
-      });
+      .send(
+        {
+          from: account,
+          value: web3.toWei(_value, "ether")
+        },
+        // eslint-disable-next-line no-unused-vars
+        (err, transactionHash) => {
+          if (!err) {
+            store.dispatch("loading/lend", "newdeath");
+            store.dispatch("toasters/toastSuccess", {
+              message: "The note has been written on the Blockchain!",
+              duration: 6000
+            });
+          } else {
+            store.dispatch("toasters/snackBarError", err);
+            store.dispatch("loading/lend", "newdeath");
+          }
+        }
+      );
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
     store.dispatch("loading/lend", "newdeath");

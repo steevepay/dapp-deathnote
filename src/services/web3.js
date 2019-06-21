@@ -39,27 +39,26 @@ export const donate = async (to, value) => {
   let resp;
   let account = await getAccount();
   try {
-    resp = await web3.eth
-      .sendTransaction(
-        {
-          from: account,
-          to: to,
-          value: web3.utils.toWei(value, "ether")
-        },
-        // eslint-disable-next-line no-unused-vars
-        (err, transactionHash) => {
-          if (err) {
-            store.dispatch("toasters/snackBarError", err);
-          }
+    resp = await web3.eth.sendTransaction(
+      {
+        from: account,
+        to: to,
+        value: web3.utils.toWei(value, "ether")
+      },
+      // eslint-disable-next-line no-unused-vars
+      (err, transactionHash) => {
+        if (!err) {
+          store.dispatch("toasters/toastSuccess", {
+            message: "Transaction success 🎉",
+            duration: 4000
+          });
+          store.dispatch("loading/lend", "donation");
+        } else {
+          store.dispatch("toasters/snackBarError", err);
+          store.dispatch("loading/lend", "donation");
         }
-      )
-      .then(() => {
-        store.dispatch("toasters/toastSuccess", {
-          message: "Transaction success 🎉",
-          duration: 4000
-        });
-        store.dispatch("loading/lend", "donation");
-      });
+      }
+    );
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
     store.dispatch("loading/lend", "donation");
