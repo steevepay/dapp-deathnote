@@ -66,7 +66,7 @@
         <div class="navbar-item">
           <div class="buttons">
             <b-tooltip
-              label="Write a new name"
+              label="Write a new note"
               position="is-bottom"
               animated
               v-show="walletLinked"
@@ -98,7 +98,16 @@
           </div>
           <!-- </div> -->
         </div>
-        <a class="navbar-item" v-show="!walletLinked">
+
+        <b-tooltip
+          class="navbar-item"
+          label="Looks like you don't have a wallet yet."
+          type="is-warning"
+          position="is-left"
+          animated
+          v-show="!walletLinked"
+        >
+          <!-- <a > -->
           <b-icon
             icon="cloud-off-outline"
             size="is-small"
@@ -106,8 +115,10 @@
             style="margin-right:10px"
           >
           </b-icon>
+
           <span> Wallet not connected</span>
-        </a>
+          <!-- </a> -->
+        </b-tooltip>
       </div>
     </div>
     <progress
