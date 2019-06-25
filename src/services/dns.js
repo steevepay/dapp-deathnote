@@ -108,3 +108,36 @@ export const getContractBalance = async () => {
   }
   return web3.fromWei(balance, "ether");
 };
+
+export const getOwnerNotes = async () => {
+  let notes = undefined;
+
+  try {
+    notes = await deathnote.methods.getOwnerNotes().call();
+  } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
+  }
+  return notes;
+};
+
+export const getOwnerNotesLength = async () => {
+  let length = 0;
+
+  try {
+    length = await deathnote.methods.getOwnerNotesLength().call();
+  } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
+  }
+  return length;
+};
+
+export const getOwnerNote = async _id => {
+  let note = undefined;
+
+  try {
+    note = await deathnote.methods.getOwnerNote(_id).call();
+  } catch (err) {
+    store.dispatch("toasters/snackBarError", err);
+  }
+  return note;
+};
