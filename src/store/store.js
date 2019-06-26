@@ -67,6 +67,9 @@ export default new Vuex.Store({
     },
     SET_MY_NOTES(state, notes) {
       state.myNotes = notes;
+    },
+    ADD_MY_NOTES(state, note) {
+      state.myNotes.push(note);
     }
   },
   actions: {
@@ -138,7 +141,7 @@ export default new Vuex.Store({
     async submitNewDeath(context, { name, conditions, date, img, value }) {
       return await dns.addDeath(name, conditions, date, img, value);
     },
-    addNewNote({ commit, state }, note) {
+    async addNewNote({ dispatch, commit, state }, note) {
       if (checkDeathObjectValid(note)) {
         let id = parseInt(note.id) - 1;
         if (
@@ -152,6 +155,11 @@ export default new Vuex.Store({
         }
         commit("ADD_NEW_NOTE", id);
         commit("SET_NUMBER_OF_NOTES", state.notesLength + 1);
+        await dispatch("fetchAccount");
+        if (state.account === note.owner) {
+          commit("ADD_MY_NOTES", id + 1);
+          commit("SET_MY_NOTES_LENGTH", state.myNotesLength + 1);
+        }
       }
     },
     changeFilter({ commit }, filter) {

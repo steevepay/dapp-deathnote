@@ -8,10 +8,22 @@
         :key="'note' + $index"
       >
         <DeathCard
-          :idnote="note.toNumber() - 1"
+          :idnote="parseInt(note) - 1"
           v-show="$index < myNotesLength"
           :disabled-donation="true"
         />
+      </div>
+      <div class="column is-12" v-show="myNotesLength === 0">
+        You haven't written any notes yet.
+      </div>
+      <div class="column is-12" v-show="myNotesLength === 0">
+        <b-button
+          icon-left="plus"
+          type="is-success"
+          @click="$emit('toggle-write-modal', true)"
+        >
+          Write a new note
+        </b-button>
       </div>
     </div>
   </section>

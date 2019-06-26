@@ -4,7 +4,10 @@
       @toggle-rules-modal="handleRulesModalEvents"
       @toggle-write-modal="handleWriteNewDeathModalEvents"
     />
-    <router-view style="margin-top:12px" />
+    <router-view
+      style="margin-top:12px"
+      @toggle-write-modal="handleWriteNewDeathModalEvents"
+    />
     <Rules
       :is-active="modalRulesActive"
       @toggle-rules-modal="handleRulesModalEvents"
