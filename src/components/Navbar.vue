@@ -17,29 +17,35 @@
         </h1>
       </router-link>
 
-      <!-- <a
+      <a
         role="button"
         class="navbar-burger burger"
         aria-label="menu"
         aria-expanded="false"
         data-target="navbarBasicExample"
+        :class="{ 'is-active': mobile }"
+        @click="mobile = !mobile"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
-      </a> -->
+      </a>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <!-- <router-link class="navbar-item" to="/">
+    <div
+      id="navbarBasicExample"
+      class="navbar-menu"
+      :class="{ 'is-active': mobile }"
+    >
+      <!-- <div class="navbar-start">
+        <router-link class="navbar-item" to="/">
           Home
         </router-link>
         <router-link class="navbar-item" to="/about">
           About
-        </router-link> -->
+        </router-link>
 
-        <!-- <div class="navbar-item has-dropdown is-hoverable">
+        <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
             More
           </a>
@@ -59,11 +65,11 @@
               Report an issue
             </a>
           </div>
-        </div> -->
-      </div>
+        </div>
+      </div> -->
 
       <div class="navbar-end">
-        <div class="navbar-item">
+        <div class="navbar-item" v-show="mobile === false">
           <div class="buttons">
             <b-tooltip
               label="Write a new note"
@@ -100,12 +106,24 @@
           </div>
           <!-- </div> -->
         </div>
-
+        <a
+          class="navbar-item"
+          @click="$emit('toggle-rules-modal', true)"
+          v-show="mobile === true"
+        >
+          <b-icon
+            icon="library-books"
+            size="is-small"
+            style="margin-right:10px"
+          >
+          </b-icon>
+          The rules
+        </a>
         <b-tooltip
           class="navbar-item"
           label="Looks like you don't have a wallet yet."
           type="is-warning"
-          position="is-left"
+          :position="mobile === false ? 'is-left' : 'is-top'"
           animated
           v-show="!walletLinked"
         >
@@ -113,7 +131,7 @@
           <b-icon
             icon="cloud-off-outline"
             size="is-small"
-            type="is-warning"
+            :type="mobile === false ? 'is-warning' : ''"
             style="margin-right:10px"
           >
           </b-icon>
@@ -140,6 +158,11 @@ export default {
   computed: {
     ...mapGetters(["walletLinked"]),
     ...mapGetters("loading", ["isLoading"])
+  },
+  data() {
+    return {
+      mobile: false
+    };
   }
 };
 </script>
