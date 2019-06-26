@@ -28,7 +28,11 @@ export default new Vuex.Store({
     // filter - [latest, oldest]
     filter: "latest",
     // user public key
-    account: null
+    account: null,
+    // MY NOTES LENGTH
+    myNotesLength: 0,
+    // MY NOTES
+    myNotes: []
   },
   mutations: {
     SET_NOTES(state, { start, end }) {
@@ -57,9 +61,31 @@ export default new Vuex.Store({
     },
     SET_ACCOUNT(state, key) {
       state.account = key;
+    },
+    SET_MY_NOTES_LENGTH(state, length) {
+      state.myNotesLength = length;
+    },
+    SET_MY_NOTES(state, notes) {
+      state.myNotes = notes;
     }
   },
   actions: {
+    async fetchMyNotes({ commit, dispatch }) {
+      dispatch("loading/lstart", "main");
+      let resp = await dns.getOwnerNotes();
+
+      commit("SET_MY_NOTES", resp);
+      dispatch("loading/lend", "main");
+      return resp;
+    },
+    async fetchMyNotesLength({ commit, dispatch }) {
+      await dispatch("fetchAccount");
+      dispatch("loading/lstart", "main");
+      let resp = await dns.getOwnerNotesLength();
+      commit("SET_MY_NOTES_LENGTH", parseInt(resp));
+      dispatch("loading/lend", "main");
+      return resp;
+    },
     async fetchAccount({ commit, getters }) {
       if (getters.walletLinked === true) {
         let resp = await web3.getAccount();
@@ -91,10 +117,6 @@ export default new Vuex.Store({
         else end = 0;
       }
 
-      // if (state.notesLength === 0) {
-      //   begin = 0;
-      //   end = 0;
-      // }
       // console.log(begin, end, state.notesLength);
       commit("SET_NOTES", {
         start: begin,

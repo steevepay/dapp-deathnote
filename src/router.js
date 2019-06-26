@@ -21,7 +21,17 @@ export default new Router({
     {
       path: "/my-notes",
       name: "my-notes",
-      component: Notes
+      component: Notes,
+      beforeEnter: async (to, from, next) => {
+        let length;
+        await store.dispatch("fetchMyNotesLength").then(resp => {
+          length = resp;
+        });
+        if (length > 0) {
+          await store.dispatch("fetchMyNotes");
+        }
+        next();
+      }
     },
     {
       path: "/error/404",

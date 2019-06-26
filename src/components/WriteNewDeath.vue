@@ -73,6 +73,7 @@
                   name="time"
                   icon="clock"
                   :min-time="minTime"
+                  :enable-seconds="true"
                   v-model.lazy="model.time"
                   position="is-top-right"
                 >
@@ -196,9 +197,11 @@ export default {
       if (this.model.time) {
         date.setHours(this.model.time.getHours());
         date.setMinutes(this.model.time.getMinutes());
+        date.setSeconds(this.model.time.getSeconds());
       } else {
         date.setHours(now.getHours());
         date.setMinutes(now.getMinutes());
+        date.setSeconds(now.getSeconds());
       }
       this.customSnackBar({
         message: "The transaction is pending...",

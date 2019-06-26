@@ -80,6 +80,14 @@
                 <b-icon icon="plus"></b-icon>
               </b-button>
             </b-tooltip>
+
+            <b-button
+              icon-left="library-books"
+              type="is-primary"
+              @click="$emit('toggle-rules-modal', true)"
+            >
+              The rules
+            </b-button>
             <b-button
               v-show="walletLinked"
               class="button is-light"
@@ -88,12 +96,6 @@
               tag="router-link"
             >
               My Notes
-            </b-button>
-            <b-button
-              type="is-primary"
-              @click="$emit('toggle-rules-modal', true)"
-            >
-              The rules
             </b-button>
           </div>
           <!-- </div> -->

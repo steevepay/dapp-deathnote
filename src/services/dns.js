@@ -112,8 +112,11 @@ export const getContractBalance = async () => {
 export const getOwnerNotes = async () => {
   let notes = undefined;
 
+  const account = await web3.getAccount();
   try {
-    notes = await deathnote.methods.getOwnerNotes().call();
+    notes = await deathnote.methods.getOwnerNotes().call({
+      from: account
+    });
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
   }
@@ -123,8 +126,11 @@ export const getOwnerNotes = async () => {
 export const getOwnerNotesLength = async () => {
   let length = 0;
 
+  const account = await web3.getAccount();
   try {
-    length = await deathnote.methods.getOwnerNotesLength().call();
+    length = await deathnote.methods.getOwnerNotesLength().call({
+      from: account
+    });
   } catch (err) {
     store.dispatch("toasters/snackBarError", err);
   }

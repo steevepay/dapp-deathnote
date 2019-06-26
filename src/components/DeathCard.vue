@@ -20,7 +20,7 @@
         </b-button>
 
         <b-dropdown-item
-          v-show="walletLinked"
+          v-show="walletLinked && disabledDonation === false"
           aria-role="listitem"
           @click="$emit('donate', death.owner)"
         >
@@ -97,6 +97,11 @@ export default {
     idnote: {
       type: Number,
       required: true
+    },
+    disabledDonation: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
