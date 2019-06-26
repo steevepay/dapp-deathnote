@@ -70,7 +70,6 @@ blockchain/history
 #truffle
 .tern-port
 yarn.lock
-package-lock.json
 
 ### Vuejs ###
 # Recommended template: Node.gitignore
